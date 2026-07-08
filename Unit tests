@@ -1,0 +1,103 @@
+
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+public class StudentListTest {
+	
+	@Test
+	void addOneStudentTest() {
+		StudentList students = new StudentList();
+		students.addStudent("Rustam", "Jahonqulov", 6.4,7);
+		
+		assertAll(
+				() -> assertTrue(students.hasID(1)),
+				() -> assertEquals("Rustam", students.getNameById(1)),
+				() -> assertEquals("Jahonqulov", students.getSurnameById(1)),
+				() -> assertEquals(6.4, students.getGradeById(1)),
+				() -> assertEquals(7, students.getLevelById(1))
+		);
+	}
+	
+	@Test
+	void addMultipleStudentTest() {
+		StudentList students = new StudentList();
+		students.addStudent("Rustam", "Jahonqulov", 4.2,7);
+		students.addStudent("Abror", "Boltayev", 5, 4);
+		
+		assertAll(
+				() -> assertTrue(students.hasID(1)),
+				() -> assertEquals("Rustam", students.getNameById(1)),
+				() -> assertEquals("Jahonqulov", students.getSurnameById(1)),
+				() -> assertEquals(4.2, students.getGradeById(1)),
+				() -> assertEquals(7, students.getLevelById(1)),
+				
+				() -> assertTrue(students.hasID(2)),
+				() -> assertEquals("Abror", students.getNameById(2)),
+				() -> assertEquals("Boltayev", students.getSurnameById(2)),
+				() -> assertEquals(5, students.getGradeById(2)),
+				() -> assertEquals(4, students.getLevelById(2))
+		);
+	}
+	
+	
+	@Test
+	void updateStudentTest() {
+		StudentList students = new StudentList();
+		
+		students.addStudent("Ali", "Valiyev", 80, 1);
+		
+		students.updateStudentById(1, "Rustam", "Jahonqulov", 99.5, 3);
+		
+		assertAll(
+				() -> assertEquals("Rustam", students.getNameById(1)),
+				() -> assertEquals("Jahonqulov", students.getSurnameById(1)),
+				() -> assertEquals(99.5, students.getGradeById(1)),
+				() -> assertEquals(3, students.getLevelById(1))
+		);
+	}
+	
+	
+	
+	@Test
+	void deleteStudentTest() {
+		StudentList students = new StudentList();
+		
+		students.addStudent("Ali", "Valiyev", 90, 1);
+		students.addStudent("Vali", "Karimov", 85, 2);
+		
+		assertTrue(students.deleteStudentById(1));
+		
+		assertAll(
+				() -> assertEquals(1, students.size()),
+				() -> assertFalse(students.hasID(1)),
+				() -> assertTrue(students.hasID(2))
+		);
+	}
+	
+	@Test
+	void hasIDTest() {
+		StudentList students = new StudentList();
+		
+		students.addStudent("Rustam", "Jahonqulov", 95, 2);
+		
+		assertAll(
+				() -> assertTrue(students.hasID(1)),
+				() -> assertFalse(students.hasID(100))
+		);
+	}
+	
+	@Test
+	void sizeTest() {
+		StudentList students = new StudentList();
+		
+		assertEquals(0, students.size());
+		
+		students.addStudent("Ali", "Valiyev", 90, 1);
+		students.addStudent("Vali", "Karimov", 80, 2);
+		
+		assertEquals(2, students.size());
+	}
+}
