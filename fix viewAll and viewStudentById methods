@@ -1,0 +1,191 @@
+
+public class StudentList {
+	//todo const val = 10, id = null(delete), println(not),
+	
+	private int rows = 0;
+	private int nextID = 1;
+	private final int val = 10;
+	
+	private final Object[][] students = new Object[val][5];
+	
+	
+	public int size() {
+		return rows;
+	}
+	
+	public String getNameById(int id) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return (String) students[i][1];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setNameById(int id, String name) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				students[i][1] = name;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public String getSurnameById(int id) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return (String) students[i][2];
+			}
+		}
+	
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setSurnameById(int id, String surname) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				students[i][2] = surname;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public double getGradeById(int id) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return (double) students[i][3];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setGradeById(int id, double grade) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				students[i][3] = grade;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public int getLevelById(int id) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return (int) students[i][4];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setLevelById(int id, int level) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				students[i][4] = level;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+	
+	
+	public void addStudent(String name, String surname, double grade, int level) {
+		
+		if (rows >= val) {
+			throw new IllegalArgumentException("Ro'yxat to'lgan!");
+		}
+		
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] == null) {
+				students[i][0] = nextID++;
+				students[i][1] = name;
+				students[i][2] = surname;
+				students[i][3] = grade;
+				students[i][4] = level;
+				
+				rows++;
+				return;
+			}
+		}
+	}
+	// massiv qaytarsin(new array)
+	public Object[][] viewAll() {
+		Object[][] list = new Object[size()][5];
+		int index = 0;
+		
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null) {
+				list[index][0] = students[i][0];
+				list[index][1] = students[i][1];
+				list[index][2] = students[i][2];
+				list[index][3] = students[i][3];
+				list[index][4] = students[i][4];
+			
+				index ++;
+			}
+		}
+		
+		return list;
+	}
+	
+	public Object[][] viewStudentByID(int id) {
+		Object[][] lists = new Object[1][5];
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				lists[0][0] = students[i][0];
+				lists[0][1] = students[i][1];
+				lists[0][2] = students[i][2];
+				lists[0][3] = students[i][3];
+				lists[0][4] = students[i][4];
+				
+				break;
+			}
+		}
+		
+		return lists;
+	}
+	
+	public void updateStudentById(int id, String name, String surname, double grade, int level) {
+		setNameById(id, name);
+		setSurnameById(id, surname);
+		setGradeById(id, grade);
+		setLevelById(id, level);
+	}
+	
+	public boolean deleteStudentById(int id) {
+		for (int i = 0; i < val; i++) {
+			
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				
+				for (int j = 0; j < 5; j++) {
+					students[i][j] = null;
+				}
+				rows--;
+				
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean hasID(int id) {
+		for (int i = 0; i < val; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	// todo yangi massivda qaytarish bor studentlarni
+}
