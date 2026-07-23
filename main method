@@ -1,0 +1,147 @@
+
+import java.util.*;
+
+public class Main {
+	public static void  main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		StudentList students = new StudentList();
+		while (true) {
+
+			menu();
+
+			System.out.print("\nAmaliyotni bajarish uchun tanlang: ");
+			int num = sc.nextInt();
+
+			switch (num) {
+
+				case 1 :
+					System.out.print("Ismni kiriting: ");
+					String name = sc.next();
+					
+					System.out.print("Familiyani kiriting: ");
+					String surname = sc.next();
+					
+					System.out.print("Reytirngini kiriting: ");
+					double grade = sc.nextDouble();
+					
+					System.out.print("Kursini kiriting: ");
+					int level = sc.nextInt();
+					
+					students.addStudent(name, surname, grade, level);
+					break;
+			
+				case 2 :
+					
+					if (students.size() != 0) {
+						
+						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
+								"ID", "Ism", "Familiya", "Reyting", "Kurs");
+						
+						System.out.println("-------------------------------------------------------");
+						
+						students.viewAll();
+					} else {
+						
+						System.out.println("Hozirda ro'yxatda talaba mavjud emas!");
+					}
+					
+					break;
+
+				case 3 :
+					System.out.print("ID ni kiriting: ");
+					int id = sc.nextInt();
+					
+					if (students.hasID(id)) {
+					
+						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
+								"ID", "Ism", "Familiya", "Reyting", "Kurs");
+						
+						System.out.println("-------------------------------------------------------");
+						
+						students.viewStudentByID(id);
+					} else{
+					
+						System.out.println("Bunday ID topilmadi!");
+					}
+					break;
+
+				case 4 :
+					System.out.print("ID ni kiriting: ");
+					int ad = sc.nextInt();
+					sc.nextLine();
+					
+					if (!students.hasID(ad)) {
+						System.out.println("ID topilmadi!");
+						break;
+					}
+					
+					System.out.println("Ismi: " + students.getNameById(ad));
+					System.out.print("Yangi ismi: ");
+					String newName = sc.nextLine();
+					
+					if (!newName.isEmpty()) {
+						students.setNameById(ad, newName);
+					}
+					
+					System.out.println("Familiyasi: " + students.getSurnameById(ad));
+					System.out.print("Yangi familiyasi: ");
+					String newSurname = sc.nextLine();
+					
+					if (!newSurname.isEmpty()) {
+						students.setSurnameById(newSurname, ad);
+					}
+					
+					System.out.println("Reytingi: " + students.getGradeById(ad));
+					System.out.print("Yangi bahosi: ");
+					String input = sc.nextLine();
+					
+					if (!input.isEmpty()) {
+						double newGrade = Double.parseDouble(input);
+						students.setGradeById(newGrade, ad);
+					}
+					
+					System.out.println("Kursi: " + students.getLevelById(ad));
+					System.out.print("Yangi kursi: ");
+					String inputs = sc.nextLine();
+					
+					if (!inputs.isEmpty()) {
+						int newLevel = Integer.parseInt(inputs);
+						students.setLevelById(newLevel, ad);
+					}
+				
+					break;
+					
+				case 5 :
+					System.out.print("ID ni kiriting: ");
+					int ayd = sc.nextInt();
+					
+					boolean result = students.deleteStudentById(ayd);
+					
+					if (result) {
+						System.out.println("Ushbu ID elementi muvaffaiyatli o'chirildi!");
+					} else {
+						System.out.println("Ushbu ID ga ega student mavjud emas!");
+					}
+					break;
+				
+				case 6:
+					System.out.println("Dasturdan chiqildi.");
+					sc.close();
+					return;
+				
+				default:
+					System.out.println("Noto'g'ri tanlov! Qaytadan urinib ko'ring.");
+			}
+		}
+		
+	}
+	
+	public static void menu() {
+		System.out.println("1. Student qo'shish");
+		System.out.println("2. Studentlar ro'yxati");
+		System.out.println("3. ID bo'yicha qidirish");
+		System.out.println("4. Tahrirlash");
+		System.out.println("5. O'chirish");
+		System.out.println("6. Chiqish");
+	}
+}
