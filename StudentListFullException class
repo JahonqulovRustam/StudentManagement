@@ -1,0 +1,9 @@
+
+
+public class StudentListFullException extends RuntimeException{
+	
+	StudentListFullException(String message) {
+		
+		super(message);
+	}
+}
