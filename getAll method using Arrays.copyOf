@@ -1,0 +1,14 @@
+public Object[][] getAll() {
+		Object[][] list = new Object[size()][5];
+		int index = 0;
+
+		for (int i = 0; i < Capacity; i++) {
+			
+			if (students[i][0] != null) {
+				
+				list[index++] = Arrays.copyOf(students[i], students[i].length);	// todo array copy (Arrays.copyOf)
+			}
+		}
+
+		return list;
+	}
