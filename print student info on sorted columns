@@ -1,0 +1,56 @@
+case 6:
+						
+						System.out.println("""
+								ID bo'yicha sortlash(1)
+								Ism bo'yicha sortlash(2)
+								Familiya bo'yicha sortlash(3)
+								Reytingi bo'yicha sortlash(4)
+								Kursi bo'yicha sortlash(5)
+								Tugatish(6)
+								""");
+						
+						System.out.print("Birortasini tanlang: ");
+						int a = sc.nextInt();
+						
+						Object[][] sorted = null;
+						
+						switch (a) {
+							case 1:
+								sorted = students.sort(Columns.ID);
+								break;
+							case 2:
+								sorted = students.sort(Columns.NAME);
+								break;
+							case 3:
+								sorted = students.sort(Columns.SURNAME);
+								break;
+							case 4:
+								sorted = students.sort(Columns.GRADE);
+								break;
+							case 5:
+								sorted = students.sort(Columns.LEVEL);
+								break;
+							case 6:
+								break;
+							default:
+								System.out.println("Noto'g'ri tanlov!");
+								break;
+						}
+						
+						if (sorted != null) {
+							System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
+									"ID", "Ism", "Familiya", "Reyting", "Kurs");
+							
+							System.out.println("-------------------------------------------------------");
+							
+							for (Object[] student : sorted) {
+								System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
+										(int) student[0],
+										student[1],
+										student[2],
+										(double) student[3],
+										(int) student[4]);
+							}
+						}
+						
+						break;

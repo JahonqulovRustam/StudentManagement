@@ -1,0 +1,20 @@
+
+
+public class StudentNotFoundException extends RuntimeException {
+	
+	public StudentNotFoundException(String message) {
+		
+		super(message);
+	}
+}
+
+
+
+
+public class StudentListFullException extends RuntimeException{
+	
+	StudentListFullException(String message) {
+		
+		super(message);
+	}
+}

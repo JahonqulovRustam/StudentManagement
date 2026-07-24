@@ -1,0 +1,42 @@
+case 7:
+						
+						System.out.print("Ism bo'yicha qidirish uchun ismni kiriting: ");
+						String name = sc.nextLine();
+						
+						System.out.print("Familiya bo'yicha qidirish uchun familiyani kiriting: ");
+						String surname = sc.nextLine();
+						
+						System.out.print("Reytingi bo'yicha qidirish uchun reytingni kiriting: ");
+						String grade = sc.nextLine();
+						
+						System.out.print("Darajasi bo'yicha qidirish uchun darajani kiriting: ");
+						String level = sc.nextLine();
+						
+						List<Integer> searched = null;
+						
+						searched = name.isEmpty() ? null : students.search(name, null, null, null);
+						searched = surname.isEmpty() ? null : students.search(null, surname, null, null);
+						searched = grade.isEmpty() ? null : students.search(null, null, Double.parseDouble(grade), null);
+						searched = level.isEmpty() ? null : students.search(null, null, null, Integer.parseInt(level));
+					
+					if (searched != null && !searched.isEmpty()) {
+						
+						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
+								"ID", "Ism", "Familiya", "Reyting", "Kurs");
+						
+						System.out.println("-------------------------------------------------------");
+						
+						for (int i = 0; i < searched.size(); i++) {
+							int ids = searched.get(i);
+							
+							Object[] student = students.getStudentById(ids);
+							System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
+									(Integer) student[0],
+									student[1],
+									student[2],
+									(Double) student[3],
+									(Integer) student[4]);
+						}
+					}
+					
+					break;

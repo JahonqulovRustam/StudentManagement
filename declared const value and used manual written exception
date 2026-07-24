@@ -1,0 +1,32 @@
+private static final int Capacity = 10; //todo constVal(name)
+
+public void addStudent(String name, String surname, double grade, int level) {
+		
+		if (size() == Capacity) {
+			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!"); // todo exception class
+		}
+		
+		for (int i = 0; i < Capacity; i++) {
+			if (students[i][0] == null) {
+				students[i][0] = nextID++;
+				students[i][1] = name;
+				students[i][2] = surname;
+				students[i][3] = grade;
+				students[i][4] = level;
+				
+				rows++;
+				return;
+			}
+		}
+	}
+
+
+public Object[] getStudentById(int id) {
+		for (int i = 0; i < Capacity; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return students[i];
+			}
+		}
+		
+		throw new StudentNotFoundException("Bunday student topilmadi!");
+	}
