@@ -1,0 +1,47 @@
+// todo bitta method orqali sort qilaman
+	// todo sort coulumn Enum orqali
+	// todo without comparator(bubble sort) private reusability
+	
+	public Object[][] sort(Columns column) {
+		
+		Object[][] sorted = getAll();
+		for (int i = 0; i < sorted.length; i++) {
+			boolean swapped = false;
+			for (int j = 0; j < sorted.length - i - 1; i++) {
+				
+				switch (column) {
+					case ID:
+						swapped = (int) sorted[j][0] > (int) sorted[j+1][0];
+						break;
+						
+					case NAME:
+						swapped = sorted[j][1].toString().compareTo(sorted[j+1][1].toString()) > 0;
+						break;
+				
+					case SURNAME:
+						swapped = sorted[j][2].toString().compareTo(sorted[j+1][2].toString()) > 0;
+						break;
+				
+					case GRADE:
+						swapped = (double) sorted[j][3] > (double) sorted[j+1][3];
+						break;
+						
+					case LEVEL:
+						swapped = (int) sorted[j][4] > (int) sorted[j+1][4];
+						break;
+				}
+				
+				if (swapped) {
+					Object[] temp = sorted[j];
+					sorted[j] = sorted[j+1];
+					sorted[j+1] = temp;
+				}
+			}
+			
+			if (!swapped) {
+				break;
+			}
+		}
+		
+		return sorted;
+	}
