@@ -1,0 +1,31 @@
+// todo bitta method orqali 4 ta param beraman, qaysi null bo'lsa o'sha oqali search qilmaydi
+	public List<Integer> search(String name, String surname, Double grade, Integer level) {
+		
+		Object[][] objects = getAll();
+		List<Integer> ids = new ArrayList<>();
+		
+		for (int i = 0; i < objects.length; i++){
+				
+			if (name != null && objects[i][1].toString().toLowerCase().contains(name.toLowerCase())) {
+				
+				ids.add((Integer) objects[i][0]);
+			}
+			
+			if (surname != null && objects[i][2].toString().toLowerCase().startsWith(surname.toLowerCase())) {
+				
+				ids.add((Integer) objects[i][0]);
+			}
+			
+			if (grade != null && (double)objects[i][3] == grade) {
+				
+				ids.add((Integer) objects[i][0]);
+			}
+			
+			if (level != null && (int) objects[i][4] == level) {
+				
+				ids.add((Integer) objects[i][0]);
+			}
+		}
+		
+		return ids;
+	}

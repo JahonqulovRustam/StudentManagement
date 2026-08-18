@@ -1,0 +1,1 @@
+	private static final int CAPACITY = 10; //todo constVal(name) (done)
