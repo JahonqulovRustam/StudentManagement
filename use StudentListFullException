@@ -1,0 +1,21 @@
+@Test
+	void testAddMoreThanTenStudents() {
+		StudentList students = new StudentList();
+		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
+		students.addStudent("Abror", "Boltayev", 4.5, 5);
+		students.addStudent("Abdulaziz", "Botirov", 2, 4);
+		students.addStudent("Jamshid", "Aliqulov", 3, 6);
+		students.addStudent("Bobur", "Hamidov", 9, 3);
+		students.addStudent("Said", "Xolmurodov", 4.5, 8);
+		students.addStudent("Bahrom", "Murodov", 5, 4);
+		students.addStudent("Raxmon", "Temirov", 4.34, 5);
+		students.addStudent("Berdi", "Amonov", 4.567, 5);
+		students.addStudent("Saidabbos", "Alisherov", 0, 4);
+		
+		StudentListFullException exception = assertThrows(StudentListFullException.class, () ->
+				students.addStudent("Nozanin", "Malikova", 4.32, 3)
+		);
+		
+		assertEquals(exception.getMessage(), "Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
+		
+	}
