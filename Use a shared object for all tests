@@ -1,141 +1,126 @@
 private StudentList students;
-	
-	@org.junit.jupiter.api.BeforeEach
+
+	@BeforeEach
 	void setUp() {
 		students = new StudentList();
-		
+
 		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
 		students.addStudent("Abror", "Boltayev", 4.5, 5);
 		students.addStudent("Abdulaziz", "Botirov", 2, 4);
-		students.addStudent("Jamshid", "Aliqulov", 3, 6);
-		students.addStudent("Bobur", "Hamidov", 9, 3);
+		students.addStudent("Jamshid", "Temirov", 3, 6);
+		students.addStudent("Abror", "Hamidov", 9, 3);
 		students.addStudent("Said", "Xolmurodov", 4.5, 8);
 		students.addStudent("Bahrom", "Murodov", 5, 4);
-		students.addStudent("Raxmon", "Temirov", 4.34, 5);
-		students.addStudent("Berdi", "Amonov", 4.567, 5);
+		students.addStudent("Bahrom", "Temirov", 4.34, 5);
+		students.addStudent("Said", "Amonov", 4.567, 5);
 		students.addStudent("Saidabbos", "Alisherov", 0, 4);
-		
-		assertTrue(students.deleteStudentById(2));
-		assertTrue(students.deleteStudentById(9));
-		
-		students.addStudent("Azimjon", "Rasulov", 3.25, 4);
 	}
 	
 	@Test
-	void testSortFunctionById() {
+	void testSortById() {
 		
-		Object[][] original = students.getAll();
 		Object[][] sorted = students.sort(Columns.ID);
 		
-		int[] expectedIds = {
-				1,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8,
-				10,
-				11
+		Object[][] expected = {
+				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
+				{2,  "Abror",     "Boltayev",     4.5,   5},
+				{3,  "Abdulaziz", "Botirov",      2.0,   4},
+				{4,  "Jamshid",   "Temirov",      3.0,   6},
+				{5,  "Abror",     "Hamidov",      9.0,   3},
+				{6,  "Said",      "Xolmurodov",   4.5,   8},
+				{7,  "Bahrom",    "Murodov",      5.0,   4},
+				{8,  "Bahrom",    "Temirov",      4.34,  5},
+				{9,  "Said",      "Amonov",       4.567, 5},
+				{10, "Saidabbos", "Alisherov",    0.0,   4}
 		};
 		
-		for (int i = 0; i < expectedIds.length; i++) {
-			assertEquals(expectedIds[i], sorted[i][0]);
-		}
+		assertArrayEquals(expected, sorted);
 	}
 	
 	
 	@Test
 	void testSortByName() {
 		
-		Object[][] original = students.getAll();
 		Object[][] sorted = students.sort(Columns.NAME);
 		
-		String[] expectedNames = {
-				"Abdulaziz",
-				"Azimjon",
-				"Bahrom",
-				"Bobur",
-				"Jamshid",
-				"Raxmon",
-				"Said",
-				"Saidabbos",
-				"Sirojjon"
+		Object[][] expected = {
+				{3,  "Abdulaziz", "Botirov",      2.0,   4},
+				{2,  "Abror",     "Boltayev",     4.5,   5},
+				{5,  "Abror",     "Hamidov",      9.0,   3},
+				{7,  "Bahrom",    "Murodov",      5.0,   4},
+				{8,  "Bahrom",    "Temirov",      4.34,  5},
+				{4,  "Jamshid",   "Temirov",      3.0,   6},
+				{6,  "Said",      "Xolmurodov",   4.5,   8},
+				{9,  "Said",      "Amonov",       4.567, 5},
+				{10, "Saidabbos", "Alisherov",    0.0,   4},
+				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4}
 		};
 		
-		for (int i = 0; i < expectedNames.length; i++) {
-			assertEquals(expectedNames[i], sorted[i][1]);
-		}
+		assertArrayEquals(expected, sorted);
 	}
 	
 	
 	@Test
 	void testSortBySurname() {
 		
-		Object[][] original = students.getAll();
 		Object[][] sorted = students.sort(Columns.SURNAME);
 		
-		String[] expectedSurnames = {
-				"Aliqulov",
-				"Alisherov",
-				"Botirov",
-				"Hamidov",
-				"Murodov",
-				"Rasulov",
-				"Temirov",
-				"Toshmurodov",
-				"Xolmurodov"
+		Object[][] expected = {
+				{10, "Saidabbos", "Alisherov",    0.0,   4},
+				{9,  "Said",      "Amonov",       4.567, 5},
+				{2,  "Abror",     "Boltayev",     4.5,   5},
+				{3,  "Abdulaziz", "Botirov",      2.0,   4},
+				{5,  "Abror",     "Hamidov",      9.0,   3},
+				{7,  "Bahrom",    "Murodov",      5.0,   4},
+				{4,  "Jamshid",   "Temirov",      3.0,   6},
+				{8,  "Bahrom",    "Temirov",      4.34,  5},
+				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
+				{6,  "Said",      "Xolmurodov",   4.5,   8}
 		};
 		
-		for (int i = 0; i < expectedSurnames.length; i++) {
-			assertEquals(expectedSurnames[i], sorted[i][2]);
-		}
+		assertArrayEquals(expected, sorted);
 	}
 	
 	
 	@Test
 	void testSortByGrade() {
 		
-		Object[][] original = students.getAll();
 		Object[][] sorted = students.sort(Columns.GRADE);
 		
-		double[] expectedGrades = {
-				0,
-				2,
-				3,
-				3.25,
-				3.9,
-				4.34,
-				4.5,
-				5,
-				9
+		Object[][] expected = {
+				{10, "Saidabbos", "Alisherov",    0.0,   4},
+				{3,  "Abdulaziz", "Botirov",      2.0,   4},
+				{4,  "Jamshid",   "Temirov",      3.0,   6},
+				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
+				{8,  "Bahrom",    "Temirov",      4.34,  5},
+				{2,  "Abror",     "Boltayev",     4.5,   5},
+				{6,  "Said",      "Xolmurodov",   4.5,   8},
+				{9,  "Said",      "Amonov",       4.567, 5},
+				{7,  "Bahrom",    "Murodov",      5.0,   4},
+				{5,  "Abror",     "Hamidov",      9.0,   3}
 		};
 		
-		for (int i = 0; i < expectedGrades.length; i++) {
-			assertEquals(expectedGrades[i], sorted[i][3]);
-		}
+		assertArrayEquals(expected, sorted);
 	}
 	
 	
 	@Test
 	void testSortByLevel() {
 		
-		Object[][] original = students.getAll();
 		Object[][] sorted = students.sort(Columns.LEVEL);
 		
-		int[] expectedLevels = {
-				3,
-				4,
-				4,
-				4,
-				4,
-				4,
-				5,
-				6,
-				8
+		Object[][] expected = {
+				{5,  "Abror",     "Hamidov",      9.0,   3},
+				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
+				{3,  "Abdulaziz", "Botirov",      2.0,   4},
+				{7,  "Bahrom",    "Murodov",      5.0,   4},
+				{10, "Saidabbos", "Alisherov",    0.0,   4},
+				{2,  "Abror",     "Boltayev",     4.5,   5},
+				{8,  "Bahrom",    "Temirov",      4.34,  5},
+				{9,  "Said",      "Amonov",       4.567, 5},
+				{4,  "Jamshid",   "Temirov",      3.0,   6},
+				{6,  "Said",      "Xolmurodov",   4.5,   8}
 		};
 		
-		for (int i = 0; i < expectedLevels.length; i++) {
-			assertEquals(expectedLevels[i], sorted[i][4]);
-		}
+		assertArrayEquals(expected, sorted);
 	}
