@@ -4,8 +4,7 @@ import java.io.*;
 public class StudentStorage {
 	
 	private static final String FILENAME = "C:\\Users\\user\\OneDrive\\Desktop\\StudentList.txt";
-	private static final String DELIMITER = ","; 
-// declared delimiter as constant 
+	private static final String DELIMITER = ",";
 	
 	public void saveToFile(StudentList list) {
 		
@@ -19,8 +18,6 @@ public class StudentStorage {
 				for (int i = 0; i < student.length; i++) {
 					values[i] = String.valueOf(student[i]);
 				}
-
-// created an array values for using String.join() method
 				
 				String line = String.join(DELIMITER, values);
 				writer.write(line);
@@ -35,8 +32,7 @@ public class StudentStorage {
 	public StudentList loadFromFile() {
 		
 		StudentList students = new StudentList();
-// it returns new StudentList object after reading from file
-
+		
 		try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
 			
 			String line;
@@ -44,7 +40,7 @@ public class StudentStorage {
 				String[] student = line.split(DELIMITER);
 				students.addStudent(student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
 			}
-		
+			
 		} catch (IOException e) {
 			System.out.println("Fayldan olishda xatolik: " + e.getMessage());
 		}
