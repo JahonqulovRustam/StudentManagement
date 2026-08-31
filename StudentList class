@@ -1,0 +1,172 @@
+public class StudentList {
+	
+	private final Object[][] students = new Object[10][5];
+	
+	private int rows = 0;
+	private int nextID = 1;
+	
+	
+	public int size() {
+		return rows;
+	}
+	
+	public String getNameById(int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				return (String) students[i][1];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setNameById(int id, String name) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				students[i][1] = name;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public String getSurnameById(int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				return (String) students[i][2];
+			}
+		}
+	
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setSurnameById(String surname, int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				students[i][2] = surname;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public double getGradeById(int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				return (double) students[i][3];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setGradeById(double grade, int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				students[i][3] = grade;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public int getLevelById(int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				return (int) students[i][4];
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+
+	public void setLevelById(int level, int id) {
+		for (int i = 0; i < rows; i++) {
+			if ((int) students[i][0] == id) {
+				students[i][4] = level;
+				return;
+			}
+		}
+
+		throw new IllegalArgumentException("Bunday ID topilmadi!");
+	}
+	
+	public void addStudent(String name, String surname, double grade, int level) {
+		if (rows >= 10) {
+			throw new IllegalArgumentException("Ro'yxat to'lgan!");
+		}
+		
+		students[rows][0] = nextID++;
+		students[rows][1] = name;
+		students[rows][2] = surname;
+		students[rows][3] = grade;
+		students[rows][4] = level;
+		
+		rows++;
+	}
+	
+	public void viewAll() {
+		for (int i = 0; i < size(); i++) {
+			view(i);
+		}
+	}
+	
+	public void viewStudentByID(int id) {
+		for (int i = 0; i < size(); i++) {
+			if ((int) students[i][0] == id) {
+				view(i);
+			}
+		}
+	}
+	
+	public void updateStudentById(int id, String name, String surname, double grade, int level) {
+		setNameById(id, name);
+		setSurnameById(surname, id);
+		setGradeById(grade, id);
+		setLevelById(level, id);
+	}
+	
+	public boolean deleteStudentById(int id) {
+		int index = -1;
+		for (int i = 0; i < size(); i++) {
+			if ((int) students[i][0] == id) {
+				index = i;
+				break;
+			}
+		}
+
+		if (index == -1) {
+			return false;
+		}
+
+		for (int i = index; i < rows - 1; i++) {
+			students[i] = students[i + 1];
+		}
+
+		rows--;
+		
+		return true;
+	}
+	
+	public void view(int index) {
+		System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
+				(int) students[index][0],
+				students[index][1],
+				students[index][2],
+				(double) students[index][3],
+				(int) students[index][4]);
+	}
+	
+	public boolean hasID(int id) {
+		for (int i = 0; i < size(); i++) {
+			if ((int) students[i][0] == id) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+}

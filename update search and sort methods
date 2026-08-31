@@ -1,0 +1,230 @@
+
+
+import java.util.*;
+
+
+enum Columns {
+	ID, NAME, SURNAME, GRADE, LEVEL
+}
+
+
+public class StudentList {
+	
+	private int rows = 0;
+	private int nextID = 1;
+	private static final int Capacity = 10; //todo constVal(name) (done)
+	
+	private final Object[][] students = new Object[Capacity][5];
+	
+	
+	public int size() {
+		return rows;
+	}
+	
+	public String getNameById(int id) {
+		
+		return (String) getStudentById(id)[1];
+	}
+
+	public void setNameById(int id, String name) {
+		
+		getStudentById(id)[1] = name;
+	}
+
+	public String getSurnameById(int id) {
+		
+		return (String) getStudentById(id)[2];
+	}
+
+	public void setSurnameById(int id, String surname) {
+		
+		getStudentById(id)[2] = surname;
+	}
+
+	public double getGradeById(int id) {
+		
+		return (double) getStudentById(id)[3];
+	}
+
+	public void setGradeById(int id, double grade) {
+		
+		getStudentById(id)[3] = grade;
+	}
+
+	public int getLevelById(int id) {
+		
+		return (int) getStudentById(id)[4];
+	}
+
+	public void setLevelById(int id, int level) {
+		
+		getStudentById(id)[4] = level;
+	}
+	
+	
+	public void addStudent(String name, String surname, double grade, int level) {
+		
+		if (size() == Capacity) {
+			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!"); // todo exception class
+		}
+		
+		for (int i = 0; i < Capacity; i++) {
+			if (students[i][0] == null) {
+				students[i][0] = nextID++;
+				students[i][1] = name;
+				students[i][2] = surname;
+				students[i][3] = grade;
+				students[i][4] = level;
+				
+				rows++;
+				return;
+			}
+		}
+	}
+	
+	public Object[][] getAll() {
+		Object[][] list = new Object[size()][5];
+		int index = 0;
+
+		for (int i = 0; i < Capacity; i++) {
+			
+			if (students[i][0] != null) {
+				
+				list[index++] = Arrays.copyOf(students[i], students[i].length);	// todo array copy (Arrays.copyOf)
+			}
+		}
+
+		return list;
+	}
+	
+	public Object[] getStudentById(int id) {
+		for (int i = 0; i < Capacity; i++) {
+			if (students[i][0] != null && (int) students[i][0] == id) {
+				return students[i];
+			}
+		}
+		
+		throw new StudentNotFoundException("Bunday student topilmadi!");
+	}
+	
+	public void updateStudentById(int id, String name, String surname, double grade, int level) {
+		setNameById(id, name);
+		setSurnameById(id, surname);
+		setGradeById(id, grade);
+		setLevelById(id, level);
+	}
+	
+	public boolean deleteStudentById(int id) {
+		
+		if (hasId(id)) {
+			getStudentById(id)[0] = null;
+			rows--;
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	public boolean hasId(int id) {
+		return getStudentById(id) != null;
+	}
+	
+	// todo bitta method orqali sort qilaman
+	// todo sort coulumn Enum orqali
+	// todo without comparator(bubble sort) private reusability
+	
+	public Object[][] sort(Columns column) {
+		
+		Object[][] sorted = getAll();
+		for (int i = 0; i < sorted.length; i++) {
+			boolean swapped = false;
+			for (int j = 0; j < sorted.length - i - 1; i++) {
+				
+				switch (column) {
+					case ID:
+						swapped = (int) sorted[j][0] > (int) sorted[j+1][0];
+						break;
+						
+					case NAME:
+						swapped = sorted[j][1].toString().compareTo(sorted[j+1][1].toString()) > 0;
+						break;
+				
+					case SURNAME:
+						swapped = sorted[j][2].toString().compareTo(sorted[j+1][2].toString()) > 0;
+						break;
+				
+					case GRADE:
+						swapped = (double) sorted[j][3] > (double) sorted[j+1][3];
+						break;
+						
+					case LEVEL:
+						swapped = (int) sorted[j][4] > (int) sorted[j+1][4];
+						break;
+				}
+				
+				if (swapped) {
+					Object[] temp = sorted[j];
+					sorted[j] = sorted[j+1];
+					sorted[j+1] = temp;
+				}
+			}
+			
+			if (!swapped) {
+				break;
+			}
+		}
+		
+		return sorted;
+	}
+
+	// todo bitta method orqali 4 ta param beraman, qaysi null bo'lsa o'sha oqali search qilmaydi
+	public List<Integer> search(String name, String surname, Double grade, Integer level) {
+		
+		Object[][] objects = getAll();
+		List<Integer> indexes = new ArrayList<>();
+		
+		if (name != null) {
+			for (int i = 0; i < objects.length; i++){
+				
+				if (objects[i][1].toString().toLowerCase().contains(name.toLowerCase())) {
+					
+					indexes.add((Integer) objects[i][0]);
+				}
+			}
+		}
+		
+		if (surname != null) {
+			for (int i = 0; i < objects.length; i++){
+				
+				if (objects[i][2].toString().toLowerCase().startsWith(surname.toLowerCase())) {
+					
+					indexes.add((Integer) objects[i][0]);
+				}
+			}
+		}
+		
+		if (grade != null) {
+			for (int i = 0; i < objects.length; i++){
+				
+				if ((double)objects[i][3] == grade) {
+					
+					indexes.add((Integer) objects[i][0]);
+				}
+			}
+		}
+		
+		if (level != null) {
+			for (int i = 0; i < objects.length; i++){
+				
+				if ((int)objects[i][4] == level) {
+					
+					indexes.add((Integer) objects[i][0]);
+				}
+			}
+		}
+		
+		return indexes;
+	}
+}
+
