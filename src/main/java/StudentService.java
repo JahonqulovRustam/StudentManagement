@@ -1,22 +1,18 @@
 
 
-import java.util.*;
 import exceptions.*;
 
-
-enum Columns {
-	ID, NAME, SURNAME, GRADE, LEVEL
-}
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class StudentList {
+public class StudentService {
 	
 	private int rows = 0;
 	private int nextID = 1;
 	private static final int CAPACITY = 10;
 	
-	private final Object[][] students = new Object[CAPACITY][5];
-	
+	private final Student[] students = new Student[CAPACITY];
 	
 	public int size() {
 		return rows;
@@ -24,42 +20,42 @@ public class StudentList {
 	
 	public String getNameById(int id) {
 		
-		return (String) getStudentById(id)[1];
+		return getStudentById(id).getName();
 	}
 	
 	public void setNameById(int id, String name) {
 		
-		getStudentById(id)[1] = name;
+		getStudentById(id).setName(name);
 	}
 	
 	public String getSurnameById(int id) {
 		
-		return (String) getStudentById(id)[2];
+		return getStudentById(id).getSurname();
 	}
 	
 	public void setSurnameById(int id, String surname) {
 		
-		getStudentById(id)[2] = surname;
+		getStudentById(id).setSurname(surname);
 	}
 	
 	public double getGradeById(int id) {
 		
-		return (double) getStudentById(id)[3];
+		return getStudentById(id).getGrade();
 	}
 	
 	public void setGradeById(int id, double grade) {
 		
-		getStudentById(id)[3] = grade;
+		getStudentById(id).setGrade(grade);
 	}
 	
 	public int getLevelById(int id) {
 		
-		return (int) getStudentById(id)[4];
+		return getStudentById(id).getLevel();
 	}
 	
 	public void setLevelById(int id, int level) {
 		
-		getStudentById(id)[4] = level;
+		getStudentById(id).setLevel(level);
 	}
 	
 	
@@ -70,39 +66,41 @@ public class StudentList {
 		}
 		
 		for (int i = 0; i < CAPACITY; i++) {
-			if (students[i][0] == null) {
-				students[i] = new Object[] {
+			if (students[i] == null) {
+				students[i] = new Student(
 						nextID++,
 						name,
 						surname,
 						grade,
-						level
-				};
+						level);
 				
 				rows++;
 				break;
 			}
 		}
 	}
-	
-	public Object[][] getAll() {
-		Object[][] list = new Object[size()][5];
+
+	public Student[] getAll() {
+		Student[] list = new Student[size()];
 		int index = 0;
 		
 		for (int i = 0; i < CAPACITY; i++) {
 			
-			if (students[i][0] != null) {
+			if (students[i] != null) {
 				
-				list[index++] = Arrays.copyOf(students[i], students[i].length);
+				list[index++] = students[i];
 			}
 		}
 		
 		return list;
 	}
-	
-	public Object[] getStudentById(int id) {
+
+	public Student getStudentById(int id) {
+		
 		for (int i = 0; i < CAPACITY; i++) {
-			if (students[i][0] != null && (int) students[i][0] == id) {
+			
+			if (students[i] != null && students[i].getId() == id) {
+				
 				return students[i];
 			}
 		}
@@ -120,7 +118,14 @@ public class StudentList {
 	public boolean deleteStudentById(int id) {
 		
 		if (hasId(id)) {
-			getStudentById(id)[0] = null;
+			
+			for (int i = 0; i < CAPACITY; i++) {
+				
+				if (students[i] != null && students[i].getId() == id) {
+					students[i] = null;
+				}
+			}
+			
 			rows--;
 			
 			return true;
@@ -130,18 +135,21 @@ public class StudentList {
 	}
 	
 	public boolean hasId(int id) {
+		
 		for (int i = 0; i < CAPACITY; i++) {
-			if (students[i][0] != null && (int) students[i][0] == id) {
+			
+			if (students[i] != null && students[i].getId() == id) {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
 	
-	public Object[][] sort(Columns column) {
+	public Student[] sort(Columns column) {
 		
-		Object[][] sorted = getAll();
+		Student[] sorted = getAll();
 		
 		for (int i = 0; i < sorted.length; i++) {
 			
@@ -154,28 +162,28 @@ public class StudentList {
 				switch (column) {
 					
 					case ID:
-						shouldSwap = (int) sorted[j][0] > (int) sorted[j+1][0];
+						shouldSwap = sorted[j].getId() > sorted[j+1].getId();
 						break;
 					
 					case NAME:
-						shouldSwap = sorted[j][1].toString().compareTo(sorted[j+1][1].toString()) > 0;
+						shouldSwap = sorted[j].getName().compareTo(sorted[j+1].getName()) > 0;
 						break;
 					
 					case SURNAME:
-						shouldSwap = sorted[j][2].toString().compareTo(sorted[j+1][2].toString()) > 0;
+						shouldSwap = sorted[j].getSurname().compareTo(sorted[j+1].getSurname()) > 0;
 						break;
 					
 					case GRADE:
-						shouldSwap = (double) sorted[j][3] > (double) sorted[j+1][3];
+						shouldSwap = sorted[j].getGrade() > sorted[j+1].getGrade();
 						break;
 					
 					case LEVEL:
-						shouldSwap = (int) sorted[j][4] > (int) sorted[j+1][4];
+						shouldSwap = sorted[j].getLevel() > sorted[j+1].getLevel();
 						break;
 				}
 				
 				if (shouldSwap) {
-					Object[] temp = sorted[j];
+					Student temp = sorted[j];
 					sorted[j] = sorted[j+1];
 					sorted[j+1] = temp;
 					swapped = true;
@@ -192,29 +200,29 @@ public class StudentList {
 	
 	public List<Integer> search(String name, String surname, Double grade, Integer level) {
 		
-		Object[][] objects = getAll();
+		Student[] objects = getAll();
 		List<Integer> ids = new ArrayList<>();
 		
 		for (int i = 0; i < objects.length; i++){
 			
-			if (name != null && objects[i][1].toString().toLowerCase().contains(name.toLowerCase())) {
+			if (name != null && objects[i].getName().toLowerCase().contains(name.toLowerCase())) {
 				
-				ids.add((Integer) objects[i][0]);
+				ids.add(objects[i].getId());
 			}
 			
-			if (surname != null && objects[i][2].toString().toLowerCase().startsWith(surname.toLowerCase())) {
+			if (surname != null && objects[i].getSurname().toLowerCase().startsWith(surname.toLowerCase())) {
 				
-				ids.add((Integer) objects[i][0]);
+				ids.add(objects[i].getId());
 			}
 			
-			if (grade != null && (double)objects[i][3] == grade) {
+			if (objects[i].getGrade().equals(grade)) {
 				
-				ids.add((Integer) objects[i][0]);
+				ids.add(objects[i].getId());
 			}
 			
-			if (level != null && (int) objects[i][4] == level) {
+			if (objects[i].getLevel().equals(level)) {
 				
-				ids.add((Integer) objects[i][0]);
+				ids.add(objects[i].getId());
 			}
 		}
 		

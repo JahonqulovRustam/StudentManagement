@@ -6,11 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import java.util.*;
 import exceptions.*;
 
-public class StudentListTest {
+public class StudentServiceTest {
 	
 	@Test
 	void testAddStudent() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		students.addStudent("Rustam", "Jahonqulov", 6.4, 7);
 		
 		assertAll(
@@ -24,7 +24,7 @@ public class StudentListTest {
 	
 	@Test
 	void testAddMultipleStudent() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		students.addStudent("Rustam", "Jahonqulov", 4.2, 7);
 		students.addStudent("Abror", "Boltayev", 5, 4);
 		
@@ -45,7 +45,7 @@ public class StudentListTest {
 	
 	@Test
 	void testAddMoreThanTenStudents() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
 		students.addStudent("Abror", "Boltayev", 4.5, 5);
 		students.addStudent("Abdulaziz", "Botirov", 2, 4);
@@ -67,26 +67,26 @@ public class StudentListTest {
 	
 	@Test
 	void testViewAll() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
 		students.addStudent("Abror", "Boltayev", 4.5, 5);
 		students.addStudent("Abdulaziz", "Botirov", 2, 4);
 		students.addStudent("Jamshid", "Aliqulov", 3, 6);
 		
-		Object[][] actual = students.getAll();
+		Student[] actual = students.getAll();
 		
 		assertAll(
-				() -> assertArrayEquals(new Object[]{1, "Sirojjon", "Toshmurodov", 3.9, 4}, actual[0]),
-				() -> assertArrayEquals(new Object[]{2, "Abror", "Boltayev", 4.5, 5}, actual[1]),
-				() -> assertArrayEquals(new Object[]{3, "Abdulaziz", "Botirov", 2.0, 4}, actual[2]),
-				() -> assertArrayEquals(new Object[]{4, "Jamshid", "Aliqulov", 3.0, 6}, actual[3])
+				() -> assertEquals(new Student(1, "Sirojjon", "Toshmurodov", 3.9, 4), actual[0]),
+				() -> assertEquals(new Student(2, "Abror", "Boltayev", 4.5, 5), actual[1]),
+				() -> assertEquals(new Student(3, "Abdulaziz", "Botirov", 2.0, 4), actual[2]),
+				() -> assertEquals(new Student(4, "Jamshid", "Aliqulov", 3.0, 6), actual[3])
 		);
 	}
 	
 	@Test
 	void testViewStudentById() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
 		students.addStudent("Abror", "Boltayev", 4.5, 5);
@@ -94,20 +94,20 @@ public class StudentListTest {
 		students.addStudent("Jamshid", "Aliqulov", 3, 6);
 		
 		assertAll(
-				() -> assertArrayEquals(
-						new Object[]{1, "Sirojjon", "Toshmurodov", 3.9, 4},
+				() -> assertEquals(
+						new Student(1, "Sirojjon", "Toshmurodov", 3.9, 4),
 						students.getStudentById(1)
 				),
-				() -> assertArrayEquals(
-						new Object[]{2, "Abror", "Boltayev", 4.5, 5},
+				() -> assertEquals(
+						new Student(2, "Abror", "Boltayev", 4.5, 5),
 						students.getStudentById(2)
 				),
-				() -> assertArrayEquals(
-						new Object[]{3, "Abdulaziz", "Botirov", 2.0, 4},
+				() -> assertEquals(
+						new Student(3, "Abdulaziz", "Botirov", 2.0, 4),
 						students.getStudentById(3)
 				),
-				() -> assertArrayEquals(
-						new Object[]{4, "Jamshid", "Aliqulov", 3.0, 6},
+				() -> assertEquals(
+						new Student(4, "Jamshid", "Aliqulov", 3.0, 6),
 						students.getStudentById(4)
 				)
 		);
@@ -115,7 +115,7 @@ public class StudentListTest {
 	
 	@Test
 	void testUpdateStudent() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		students.addStudent("Ali", "Valiyev", 80, 1);
 		
@@ -131,7 +131,7 @@ public class StudentListTest {
 	
 	@Test
 	void testDeleteStudent() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		students.addStudent("Ali", "Valiyev", 90, 1);
 		students.addStudent("Vali", "Karimov", 85, 2);
@@ -149,7 +149,7 @@ public class StudentListTest {
 	
 	@Test
 	void testHasID() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		students.addStudent("Rustam", "Jahonqulov", 95, 2);
 		
@@ -161,7 +161,7 @@ public class StudentListTest {
 	
 	@Test
 	void testSize() {
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		assertEquals(0, students.size());
 		
@@ -187,11 +187,11 @@ public class StudentListTest {
 		);
 	}
 	
-	private StudentList students;
+	private StudentService students;
 	
 	@BeforeEach
 	void setUp() {
-		students = new StudentList();
+		students = new StudentService();
 		
 		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
 		students.addStudent("Abror", "Boltayev", 4.5, 5);
@@ -208,19 +208,19 @@ public class StudentListTest {
 	@Test
 	void testSortById() {
 		
-		Object[][] sorted = students.sort(Columns.ID);
+		Student[] sorted = students.sort(Columns.ID);
 		
-		Object[][] expected = {
-				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
-				{2,  "Abror",     "Boltayev",     4.5,   5},
-				{3,  "Abdulaziz", "Botirov",      2.0,   4},
-				{4,  "Jamshid",   "Temirov",      3.0,   6},
-				{5,  "Abror",     "Hamidov",      9.0,   3},
-				{6,  "Said",      "Xolmurodov",   4.5,   8},
-				{7,  "Bahrom",    "Murodov",      5.0,   4},
-				{8,  "Bahrom",    "Temirov",      4.34,  5},
-				{9,  "Said",      "Amonov",       4.567, 5},
-				{10, "Saidabbos", "Alisherov",    0.0,   4}
+		Student[] expected = {
+				new Student(1,  "Sirojjon",  "Toshmurodov", 3.9,   4),
+				new Student(2,  "Abror",     "Boltayev",     4.5,   5),
+				new Student(3,  "Abdulaziz", "Botirov",      2.0,   4),
+				new Student(4,  "Jamshid",   "Temirov",      3.0,   6),
+				new Student(5,  "Abror",     "Hamidov",      9.0,   3),
+				new Student(6,  "Said",      "Xolmurodov",   4.5,   8),
+				new Student(7,  "Bahrom",    "Murodov",      5.0,   4),
+				new Student(8,  "Bahrom",    "Temirov",      4.34,  5),
+				new Student(9,  "Said",      "Amonov",       4.567, 5),
+				new Student(10, "Saidabbos", "Alisherov",    0.0,   4)
 		};
 		
 		assertArrayEquals(expected, sorted);
@@ -230,19 +230,19 @@ public class StudentListTest {
 	@Test
 	void testSortByName() {
 		
-		Object[][] sorted = students.sort(Columns.NAME);
+		Student[] sorted = students.sort(Columns.NAME);
 		
-		Object[][] expected = {
-				{3,  "Abdulaziz", "Botirov",      2.0,   4},
-				{2,  "Abror",     "Boltayev",     4.5,   5},
-				{5,  "Abror",     "Hamidov",      9.0,   3},
-				{7,  "Bahrom",    "Murodov",      5.0,   4},
-				{8,  "Bahrom",    "Temirov",      4.34,  5},
-				{4,  "Jamshid",   "Temirov",      3.0,   6},
-				{6,  "Said",      "Xolmurodov",   4.5,   8},
-				{9,  "Said",      "Amonov",       4.567, 5},
-				{10, "Saidabbos", "Alisherov",    0.0,   4},
-				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4}
+		Student[] expected = {
+				new Student(3,  "Abdulaziz", "Botirov",      2.0,   4),
+				new Student(2,  "Abror",     "Boltayev",     4.5,   5),
+				new Student(5,  "Abror",     "Hamidov",      9.0,   3),
+				new Student(7,  "Bahrom",    "Murodov",      5.0,   4),
+				new Student(8,  "Bahrom",    "Temirov",      4.34,  5),
+				new Student(4,  "Jamshid",   "Temirov",      3.0,   6),
+				new Student(6,  "Said",      "Xolmurodov",   4.5,   8),
+				new Student(9,  "Said",      "Amonov",       4.567, 5),
+				new Student(10, "Saidabbos", "Alisherov",    0.0,   4),
+				new Student(1,  "Sirojjon",  "Toshmurodov", 3.9,   4)
 		};
 		
 		assertArrayEquals(expected, sorted);
@@ -252,19 +252,19 @@ public class StudentListTest {
 	@Test
 	void testSortBySurname() {
 		
-		Object[][] sorted = students.sort(Columns.SURNAME);
+		Student[] sorted = students.sort(Columns.SURNAME);
 		
-		Object[][] expected = {
-				{10, "Saidabbos", "Alisherov",    0.0,   4},
-				{9,  "Said",      "Amonov",       4.567, 5},
-				{2,  "Abror",     "Boltayev",     4.5,   5},
-				{3,  "Abdulaziz", "Botirov",      2.0,   4},
-				{5,  "Abror",     "Hamidov",      9.0,   3},
-				{7,  "Bahrom",    "Murodov",      5.0,   4},
-				{4,  "Jamshid",   "Temirov",      3.0,   6},
-				{8,  "Bahrom",    "Temirov",      4.34,  5},
-				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
-				{6,  "Said",      "Xolmurodov",   4.5,   8}
+		Student[] expected = {
+				new Student(10, "Saidabbos", "Alisherov",    0.0,   4),
+				new Student(9,  "Said",      "Amonov",       4.567, 5),
+				new Student(2,  "Abror",     "Boltayev",     4.5,   5),
+				new Student(3,  "Abdulaziz", "Botirov",      2.0,   4),
+				new Student(5,  "Abror",     "Hamidov",      9.0,   3),
+				new Student(7,  "Bahrom",    "Murodov",      5.0,   4),
+				new Student(4,  "Jamshid",   "Temirov",      3.0,   6),
+				new Student(8,  "Bahrom",    "Temirov",      4.34,  5),
+				new Student(1,  "Sirojjon",  "Toshmurodov", 3.9,   4),
+				new Student(6,  "Said",      "Xolmurodov",   4.5,   8)
 		};
 		
 		assertArrayEquals(expected, sorted);
@@ -274,19 +274,19 @@ public class StudentListTest {
 	@Test
 	void testSortByGrade() {
 		
-		Object[][] sorted = students.sort(Columns.GRADE);
+		Student[] sorted = students.sort(Columns.GRADE);
 		
-		Object[][] expected = {
-				{10, "Saidabbos", "Alisherov",    0.0,   4},
-				{3,  "Abdulaziz", "Botirov",      2.0,   4},
-				{4,  "Jamshid",   "Temirov",      3.0,   6},
-				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
-				{8,  "Bahrom",    "Temirov",      4.34,  5},
-				{2,  "Abror",     "Boltayev",     4.5,   5},
-				{6,  "Said",      "Xolmurodov",   4.5,   8},
-				{9,  "Said",      "Amonov",       4.567, 5},
-				{7,  "Bahrom",    "Murodov",      5.0,   4},
-				{5,  "Abror",     "Hamidov",      9.0,   3}
+		Student[] expected = {
+				new Student(10, "Saidabbos", "Alisherov",    0.0,   4),
+				new Student(3,  "Abdulaziz", "Botirov",      2.0,   4),
+				new Student(4,  "Jamshid",   "Temirov",      3.0,   6),
+				new Student(1,  "Sirojjon",  "Toshmurodov", 3.9,   4),
+				new Student(8,  "Bahrom",    "Temirov",      4.34,  5),
+				new Student(2,  "Abror",     "Boltayev",     4.5,   5),
+				new Student(6,  "Said",      "Xolmurodov",   4.5,   8),
+				new Student(9,  "Said",      "Amonov",       4.567, 5),
+				new Student(7,  "Bahrom",    "Murodov",      5.0,   4),
+				new Student(5,  "Abror",     "Hamidov",      9.0,   3)
 		};
 		
 		assertArrayEquals(expected, sorted);
@@ -296,19 +296,19 @@ public class StudentListTest {
 	@Test
 	void testSortByLevel() {
 		
-		Object[][] sorted = students.sort(Columns.LEVEL);
+		Student[] sorted = students.sort(Columns.LEVEL);
 		
-		Object[][] expected = {
-				{5,  "Abror",     "Hamidov",      9.0,   3},
-				{1,  "Sirojjon",  "Toshmurodov", 3.9,   4},
-				{3,  "Abdulaziz", "Botirov",      2.0,   4},
-				{7,  "Bahrom",    "Murodov",      5.0,   4},
-				{10, "Saidabbos", "Alisherov",    0.0,   4},
-				{2,  "Abror",     "Boltayev",     4.5,   5},
-				{8,  "Bahrom",    "Temirov",      4.34,  5},
-				{9,  "Said",      "Amonov",       4.567, 5},
-				{4,  "Jamshid",   "Temirov",      3.0,   6},
-				{6,  "Said",      "Xolmurodov",   4.5,   8}
+		Student[] expected = {
+				new Student(5,  "Abror",     "Hamidov",      9.0,   3),
+				new Student(1,  "Sirojjon",  "Toshmurodov", 3.9,   4),
+				new Student(3,  "Abdulaziz", "Botirov",      2.0,   4),
+				new Student(7,  "Bahrom",    "Murodov",      5.0,   4),
+				new Student(10, "Saidabbos", "Alisherov",    0.0,   4),
+				new Student(2,  "Abror",     "Boltayev",     4.5,   5),
+				new Student(8,  "Bahrom",    "Temirov",      4.34,  5),
+				new Student(9,  "Said",      "Amonov",       4.567, 5),
+				new Student(4,  "Jamshid",   "Temirov",      3.0,   6),
+				new Student(6,  "Said",      "Xolmurodov",   4.5,   8)
 		};
 		
 		assertArrayEquals(expected, sorted);

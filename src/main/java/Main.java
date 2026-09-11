@@ -5,7 +5,7 @@ import exceptions.*;
 public class Main {
 	public static void  main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		StudentStorage storage = new StudentStorage();
 		
 		
@@ -35,7 +35,7 @@ public class Main {
 						System.out.print("Kursini kiriting: ");
 						int level = sc.nextInt();
 						
-						students.addStudent(name, surname, grade, level); // todo try - catch (exception handling) everywhere
+						students.addStudent(name, surname, grade, level);
 						
 						System.out.println("Student muvaffaqiyatli qo'shildi!");
 					} catch (StudentListFullException e) {
@@ -56,11 +56,11 @@ public class Main {
 							
 							for (int i = 0; i < students.size(); i++) {
 								System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-										(int) students.getAll()[i][0],
-										students.getAll()[i][1],
-										students.getAll()[i][2],
-										(double) students.getAll()[i][3],
-										(int) students.getAll()[i][4]);
+										students.getAll()[i].getId(),
+										students.getAll()[i].getName(),
+										students.getAll()[i].getSurname(),
+										students.getAll()[i].getGrade(),
+										students.getAll()[i].getLevel());
 							}
 						}
 					} catch (StudentNotFoundException e) {
@@ -83,11 +83,11 @@ public class Main {
 						System.out.println("-------------------------------------------------------");
 						
 						System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-								(int) students.getStudentById(id)[0],
-								students.getStudentById(id)[1],
-								students.getStudentById(id)[2],
-								(double) students.getStudentById(id)[3],
-								(int) students.getStudentById(id)[4]);
+								students.getStudentById(id).getId(),
+								students.getStudentById(id).getName(),
+								students.getStudentById(id).getSurname(),
+								students.getStudentById(id).getGrade(),
+								students.getStudentById(id).getLevel());
 					} catch (StudentNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
@@ -171,7 +171,7 @@ public class Main {
 					System.out.print("Birortasini tanlang: ");
 					int a = sc.nextInt();
 					
-					Object[][] sorted = null;
+					Student[] sorted = null;
 					
 					switch (a) {
 						case 1:
@@ -202,13 +202,13 @@ public class Main {
 						
 						System.out.println("-------------------------------------------------------");
 						
-						for (Object[] student : sorted) {
+						for (Student student : sorted) {
 							System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-									(int) student[0],
-									student[1],
-									student[2],
-									(double) student[3],
-									(int) student[4]);
+									student.getId(),
+									student.getName(),
+									student.getSurname(),
+									student.getGrade(),
+									student.getLevel());
 						}
 					}
 					
@@ -218,7 +218,7 @@ public class Main {
 					
 					sc.nextLine();
 					
-					List<Integer> foundStudentIds = null;
+					List<Integer> foundStudentIds;
 					
 					System.out.print("Ism bo'yicha qidirish uchun ismni kiriting: ");
 					String name = sc.nextLine();
@@ -251,13 +251,13 @@ public class Main {
 					for (int i = 0; i < foundStudentIds.size(); i++) {
 						int ids = foundStudentIds.get(i);
 						
-						Object[] student = students.getStudentById(ids);
+						Student student = students.getStudentById(ids);
 						System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-								(Integer) student[0],
-								student[1],
-								student[2],
-								(Double) student[3],
-								(Integer) student[4]);
+								student.getId(),
+								student.getName(),
+								student.getSurname(),
+								student.getGrade(),
+								student.getLevel());
 					}
 					
 					break;
