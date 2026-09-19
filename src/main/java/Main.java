@@ -35,9 +35,12 @@ public class Main {
 						System.out.print("Kursini kiriting: ");
 						int level = sc.nextInt();
 						
-						students.addStudent(name, surname, grade, level); // todo try - catch (exception handling) everywhere
-						
-						System.out.println("Student muvaffaqiyatli qo'shildi!");
+						try {
+							students.addStudent(name, surname, grade, level);
+							System.out.println("Student muvaffaqiyatli qo'shildi!");
+						} catch (DuplicateStudentException e) {
+							System.out.println(e.getMessage());
+						}
 					} catch (StudentListFullException e) {
 						System.out.println(e.getMessage());
 					}

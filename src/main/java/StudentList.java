@@ -69,6 +69,10 @@ public class StudentList {
 			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
 		}
 		
+		if (isDuplicateStudent(name, surname, grade, level)) {
+			throw new DuplicateStudentException("Ushbu student allaqachon mavjud!");
+		}
+		
 		for (int i = 0; i < CAPACITY; i++) {
 			if (students[i][0] == null) {
 				students[i] = new Object[] {
@@ -219,6 +223,23 @@ public class StudentList {
 		}
 		
 		return ids;
+	}
+	
+	boolean isDuplicateStudent(String name, String surname, double grade, int level ) {
+		Object[][] students = getAll();
+		
+		for (Object[] student : students) {
+			if (student[0] != null &&
+					student[1].equals(name) &&
+					student[2].equals(surname) &&
+					(double) student[3] == grade &&
+					(int) student[4] == level) {
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
 

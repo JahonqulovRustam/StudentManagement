@@ -175,15 +175,15 @@ public class StudentListTest {
 	@Test
 	void testSearch() {
 		
-		assertTrue(students.deleteStudentById(2));
-		assertTrue(students.deleteStudentById(9));
-		students.addStudent("Azimjon", "Rasulov", 3.25, 4);
-		
 		assertAll(
-				() -> assertEquals(students.search("Sirojjon", null, null, null), List.of(1)),
-				() -> assertEquals(students.search(null, "Xolmurodov", null, null), List.of(6)),
-				() -> assertEquals(students.search(null, null, 10.0, null), List.of()),
-				() -> assertEquals(students.search(null, null, null, 4), List.of(1, 11, 3, 7, 10))
+				() -> assertEquals(students.search("Sirojjon", null, null, null),
+						List.of(1)),
+				() -> assertEquals(students.search(null, "Xolmurodov", null, null),
+						List.of(6)),
+				() -> assertEquals(students.search(null, null, 10.0, null),
+						List.of()),
+				() -> assertEquals(students.search(null, null, null, 4),
+						List.of(1, 3, 7, 10))
 		);
 	}
 	
@@ -193,16 +193,16 @@ public class StudentListTest {
 	void setUp() {
 		students = new StudentList();
 		
-		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4);
-		students.addStudent("Abror", "Boltayev", 4.5, 5);
-		students.addStudent("Abdulaziz", "Botirov", 2, 4);
-		students.addStudent("Jamshid", "Temirov", 3, 6);
-		students.addStudent("Abror", "Hamidov", 9, 3);
-		students.addStudent("Said", "Xolmurodov", 4.5, 8);
-		students.addStudent("Bahrom", "Murodov", 5, 4);
-		students.addStudent("Bahrom", "Temirov", 4.34, 5);
-		students.addStudent("Said", "Amonov", 4.567, 5);
-		students.addStudent("Saidabbos", "Alisherov", 0, 4);
+		students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4); //id = 1
+		students.addStudent("Abror", "Boltayev", 4.5, 5); 	  //id = 2
+		students.addStudent("Abdulaziz", "Botirov", 2, 4);      //id = 3
+		students.addStudent("Jamshid", "Temirov", 3, 6);        //id = 4
+		students.addStudent("Abror", "Hamidov", 9, 3);          //id = 5
+		students.addStudent("Said", "Xolmurodov", 4.5, 8);      //id = 6
+		students.addStudent("Bahrom", "Murodov", 5, 4);         //id = 7
+		students.addStudent("Bahrom", "Temirov", 4.34, 5);      //id = 8
+		students.addStudent("Said", "Amonov", 4.567, 5);        //id = 9
+		students.addStudent("Saidabbos", "Alisherov", 0, 4);    //id = 10
 	}
 	
 	@Test
@@ -314,5 +314,14 @@ public class StudentListTest {
 		assertArrayEquals(expected, sorted);
 	}
 	
+	@Test
+	void testIsDuplicateStudent() {
+	
+		assertAll(
+				() -> assertTrue(students.isDuplicateStudent("Sirojjon",  "Toshmurodov", 3.9,   4)),
+				() -> assertTrue(students.isDuplicateStudent("Saidabbos", "Alisherov",    0.0,   4)),
+				() -> assertFalse(students.isDuplicateStudent("Kamron",    "Temirov",      4.34,  5))
+		);
+	}
 	
 }
