@@ -20,6 +20,11 @@ public class StudentListTest {
 				() -> assertEquals(6.4, students.getGradeById(1)),
 				() -> assertEquals(7, students.getLevelById(1))
 		);
+		
+		DuplicateStudentException e = assertThrows(DuplicateStudentException.class, () ->
+				students.addStudent("Rustam", "Jahonqulov", 6.4, 7)
+		);
+		assertEquals("Ushbu student allaqachon mavjud!", e.getMessage());
 	}
 	
 	@Test
@@ -52,6 +57,12 @@ public class StudentListTest {
 		students.addStudent("Jamshid", "Aliqulov", 3, 6);
 		students.addStudent("Bobur", "Hamidov", 9, 3);
 		students.addStudent("Said", "Xolmurodov", 4.5, 8);
+		
+		DuplicateStudentException e = assertThrows(DuplicateStudentException.class, () ->
+				students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4)
+		);
+		assertEquals("Ushbu student allaqachon mavjud!", e.getMessage());
+		
 		students.addStudent("Bahrom", "Murodov", 5, 4);
 		students.addStudent("Raxmon", "Temirov", 4.34, 5);
 		students.addStudent("Berdi", "Amonov", 4.567, 5);
@@ -61,8 +72,7 @@ public class StudentListTest {
 				students.addStudent("Nozanin", "Malikova", 4.32, 3)
 		);
 		
-		assertEquals(exception.getMessage(), "Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
-		
+		assertEquals("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!", exception.getMessage());
 	}
 	
 	@Test
@@ -313,15 +323,4 @@ public class StudentListTest {
 		
 		assertArrayEquals(expected, sorted);
 	}
-	
-	@Test
-	void testIsDuplicateStudent() {
-	
-		assertAll(
-				() -> assertTrue(students.isDuplicateStudent("Sirojjon",  "Toshmurodov", 3.9,   4)),
-				() -> assertTrue(students.isDuplicateStudent("Saidabbos", "Alisherov",    0.0,   4)),
-				() -> assertFalse(students.isDuplicateStudent("Kamron",    "Temirov",      4.34,  5))
-		);
-	}
-	
 }
