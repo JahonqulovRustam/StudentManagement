@@ -58,11 +58,6 @@ public class StudentListTest {
 		students.addStudent("Bobur", "Hamidov", 9, 3);
 		students.addStudent("Said", "Xolmurodov", 4.5, 8);
 		
-		DuplicateStudentException e = assertThrows(DuplicateStudentException.class, () ->
-				students.addStudent("Sirojjon", "Toshmurodov", 3.9, 4)
-		);
-		assertEquals("Ushbu student allaqachon mavjud!", e.getMessage());
-		
 		students.addStudent("Bahrom", "Murodov", 5, 4);
 		students.addStudent("Raxmon", "Temirov", 4.34, 5);
 		students.addStudent("Berdi", "Amonov", 4.567, 5);

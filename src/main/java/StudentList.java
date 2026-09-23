@@ -3,12 +3,6 @@
 import java.util.*;
 import exceptions.*;
 
-
-enum Columns {
-	ID, NAME, SURNAME, GRADE, LEVEL
-}
-
-
 public class StudentList {
 	
 	private int rows = 0;
