@@ -2,6 +2,7 @@ import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class StudentService {
@@ -61,6 +62,10 @@ public class StudentService {
 		
 		if (size() == CAPACITY) {
 			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
+		}
+		
+		if (isDuplicateStudent(name, surname, grade, level)) {
+			throw new DuplicateStudentException("Ushbu student allaqachon mavjud!");
 		}
 		
 		for (int i = 0; i < CAPACITY; i++) {
@@ -225,5 +230,22 @@ public class StudentService {
 		}
 		
 		return ids;
+	}
+	
+	public boolean isDuplicateStudent(String name, String surname, double grade, int level) {
+		Student[] studentList = getAll();
+		
+		for (Student student : studentList) {
+			if (student.getId() != null
+					&& student.getName().equals(name)
+					&& student.getSurname().equals(surname)
+					&& student.getGrade() == grade
+					&& student.getLevel() == level) {
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
