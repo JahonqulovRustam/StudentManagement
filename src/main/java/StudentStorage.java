@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 public class StudentStorage {
@@ -6,21 +5,20 @@ public class StudentStorage {
 	private static final String FILENAME = "C:\\Users\\user\\OneDrive\\Desktop\\StudentList.txt";
 	private static final String DELIMITER = ",";
 	
-	public void saveToFile(StudentList list) {
+	public void saveToFile(StudentService list) {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME))) {
 			
-			Object[][] students = list.getAll();
+			Student[] students = list.getAll();
 			
-			for (Object[] student : students) {
+			for (Student student : students) {
 				
-				String[] values = new String[student.length];
-				for (int i = 0; i < student.length; i++) {
-					values[i] = String.valueOf(student[i]);
-				}
-				
-				String line = String.join(DELIMITER, values);
-				writer.write(line);
+				writer.write(String.join(DELIMITER,
+						student.getId().toString(),
+						student.getName(),
+						student.getSurname(),
+						student.getGrade().toString(),
+						student.getLevel().toString()));
 				writer.newLine();
 			}
 			
@@ -29,16 +27,18 @@ public class StudentStorage {
 		}
 	}
 	
-	public StudentList loadFromFile() {
+	public StudentService loadFromFile() {
 		
-		StudentList students = new StudentList();
+		StudentService students = new StudentService();
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
 			
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] student = line.split(DELIMITER);
-				students.addStudent(student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
+				Student s = new Student(Integer.parseInt(student[0]), student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
+				
+				students.addStudent(s);
 			}
 			
 		} catch (IOException e) {
