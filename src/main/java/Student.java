@@ -2,21 +2,28 @@ import java.util.Objects;
 
 public class Student {
 	
-	private Integer id;
+	private final Integer id;
 	private String name;
 	private String surname;
 	private Double grade;
 	private Integer level;
+	private static int counter = 1;
 	
-	public Student() {
-	
-	}
-	public Student(Integer id, String name, String surname, Double grade, Integer level) {
-		this.id = id;
+	public Student(String name, String surname, Double grade, Integer level) {
+		this.id = counter++;
 		this.name = name;
 		this.surname = surname;
 		this.grade = grade;
 		this.level = level;
+	}
+	
+	//this is for student copy
+	public Student(Student other) {
+		this.id = other.id;
+		this.name = other.name;
+		this.surname = other.surname;
+		this.grade = other.grade;
+		this.level = other.level;
 	}
 	
 	public void setName(String name) {
@@ -49,10 +56,6 @@ public class Student {
 	
 	public Integer getLevel() {
 		return level;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	public Integer getId() {
