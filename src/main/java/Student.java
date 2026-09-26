@@ -7,16 +7,28 @@ public class Student {
 	private String surname;
 	private Double grade;
 	private Integer level;
-	private static int counter = 1;
+	private static int counter = 0;
 	
 	public Student(String name, String surname, Double grade, Integer level) {
-		this.id = counter++;
+		this.id = ++counter;
 		this.name = name;
 		this.surname = surname;
 		this.grade = grade;
 		this.level = level;
 	}
 	
+	//this helps when fetch data from file
+	public Student(int id, String name, String surname, Double grade, int level) {
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.grade = grade;
+		this.level = level;
+		
+		if (id > counter) {
+			counter = id + 1;
+		}
+	}
 	//this is for student copy
 	public Student(Student other) {
 		this.id = other.id;

@@ -13,8 +13,12 @@ public class StudentStorage {
 			
 			for (Student student : students) {
 				
-				String line = student.getId() + DELIMITER + student.getName() + DELIMITER + student.getSurname() + DELIMITER + student.getGrade() + DELIMITER + student.getLevel();
-				writer.write(line);
+				writer.write(String.join(DELIMITER,
+						student.getId().toString(),
+						student.getName(),
+						student.getSurname(),
+						student.getGrade().toString(),
+						student.getLevel().toString()));
 				writer.newLine();
 			}
 			
@@ -32,7 +36,9 @@ public class StudentStorage {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] student = line.split(DELIMITER);
-				students.addStudent(student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
+				Student s = new Student(Integer.parseInt(student[0]), student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
+				
+				students.addStudent(s);
 			}
 			
 		} catch (IOException e) {
