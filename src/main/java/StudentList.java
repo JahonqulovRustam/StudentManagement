@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StudentService {
+public class StudentList {
 	
 	private int rows = 0;
 	private static final int CAPACITY = 10;
+	private int nextId = 0;
 	
 	private final Student[] students = new Student[CAPACITY];
 	
@@ -27,7 +28,8 @@ public class StudentService {
 		
 		for (int i = 0; i < CAPACITY; i++) {
 			if (students[i] == null) {
-				students[i] = new Student(student);
+				student.setId(++nextId);
+				students[i] = student;
 				
 				rows++;
 				break;
@@ -41,7 +43,7 @@ public class StudentService {
 		
 		for (int i = 0; i < CAPACITY; i++) {
 			if (students[i] != null) {
-				list[index++] = new Student(students[i]);
+				list[index++] = students[i].clone();
 			}
 		}
 		
@@ -54,7 +56,7 @@ public class StudentService {
 			
 			if (students[i] != null && students[i].getId() == id) {
 				
-				return new Student(students[i]);
+				return students[i].clone();
 			}
 		}
 		
@@ -62,12 +64,19 @@ public class StudentService {
 	}
 	
 	public void updateStudentById(int id, Student student) {
+		
+		if (isDuplicateStudent(student)) {
+			throw new DuplicateStudentException("Ushbu student allaqachon mavjud!");
+		}
+		
 		for (int i = 0; i < CAPACITY; i++) {
 			if (students[i] != null && students[i].getId() == id) {
 				students[i].setName(student.getName());
 				students[i].setSurname(student.getSurname());
 				students[i].setGrade(student.getGrade());
 				students[i].setLevel(student.getLevel());
+				
+				return;
 			}
 		}
 		
@@ -145,19 +154,19 @@ public class StudentService {
 			
 			if (name != null && students[i].getName().toLowerCase().contains(name.toLowerCase())) {
 				
-				searchedStudents.add(new Student(students[i]));
+				searchedStudents.add(students[i].clone());
 				
 			} else if (surname != null && students[i].getSurname().toLowerCase().contains(surname.toLowerCase())) {
 				
-				searchedStudents.add(new Student(students[i]));
+				searchedStudents.add(students[i].clone());
 				
 			} else if (grade != null && students[i].getGrade().equals(grade)) {
 				
-				searchedStudents.add(new Student(students[i]));
+				searchedStudents.add(students[i].clone());
 				
 			} else if (level != null && students[i].getLevel().equals(level)) {
 				
-				searchedStudents.add(new Student(students[i]));
+				searchedStudents.add(students[i].clone());
 			}
 		}
 		
@@ -165,10 +174,11 @@ public class StudentService {
 	}
 	
 	public boolean isDuplicateStudent(Student student) {
-		Student[] studentList = getAll();
 		
-		for (Student s : studentList) {
-			if (s != null && s.equals(student)) {
+		for (Student s : students) {
+			if (s == null) continue;
+			
+			if (!s.getId().equals(student.getId()) && s.equals(student)) {
 				return true;
 			}
 		}

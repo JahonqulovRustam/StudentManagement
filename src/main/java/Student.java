@@ -1,41 +1,18 @@
 import java.util.Objects;
 
-public class Student {
+public class Student implements Cloneable {
 	
-	private final Integer id;
+	private Integer id;
 	private String name;
 	private String surname;
 	private Double grade;
 	private Integer level;
-	private static int counter = 0;
 	
 	public Student(String name, String surname, Double grade, Integer level) {
-		this.id = ++counter;
 		this.name = name;
 		this.surname = surname;
 		this.grade = grade;
 		this.level = level;
-	}
-	
-	//this helps when fetch data from file
-	public Student(int id, String name, String surname, Double grade, int level) {
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.grade = grade;
-		this.level = level;
-		
-		if (id > counter) {
-			counter = id + 1;
-		}
-	}
-	//this is for student copy
-	public Student(Student other) {
-		this.id = other.id;
-		this.name = other.name;
-		this.surname = other.surname;
-		this.grade = other.grade;
-		this.level = other.level;
 	}
 	
 	public void setName(String name) {
@@ -74,7 +51,14 @@ public class Student {
 		return id;
 	}
 	
-	
+	public void setId(Integer id) {
+		if (this.id == null) {
+			this.id = id;
+			return;
+		}
+		
+		throw new RuntimeException("Can't change ID!");
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -82,10 +66,32 @@ public class Student {
 		
 		Student student = (Student) o;
 		
-		return id.equals(student.id)
-				&& Double.compare(grade, student.grade) == 0
+		return Double.compare(grade, student.grade) == 0
 				&& level.equals(student.level)
-				&& Objects.equals(name, student.name)
-				&& Objects.equals(surname, student.surname);
+				&& Objects.equals(name.toLowerCase(), student.name.toLowerCase())
+				&& Objects.equals(surname.toLowerCase(), student.surname.toLowerCase());
+	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"%-5d %-15s %-15s %-8.2f %-5d",
+				id,
+				name,
+				surname,
+				grade,
+				level
+		);
+	}
+	
+	@Override
+	public Student clone() {
+		try {
+			Student clone = (Student) super.clone();
+			// TODO: copy mutable state here, so the clone can't change the internals of the original
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError();
+		}
 	}
 }
