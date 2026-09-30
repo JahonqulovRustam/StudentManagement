@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import java.util.*;
 import exceptions.*;
 
-public class StudentServiceTest {
+public class StudentListTest {
 
 	@Test
 	void testAddStudent() {
@@ -90,7 +90,7 @@ public class StudentServiceTest {
 	}
 
 	@Test
-	void testViewStudentById() {
+	void testGetStudentById() {
 		StudentList students = new StudentList();
 
 		students.addStudent(new Student("Sirojjon", "Toshmurodov", 3.9, 4));
@@ -195,7 +195,7 @@ public class StudentServiceTest {
 		students.addStudent(new Student("Saidabbos", "Alisherov", 0.0, 4));
 	}
 
-		@Test
+	@Test
 	void testSearch() {
 		
 		assertAll(
