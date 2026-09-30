@@ -53,9 +53,11 @@ public class Main {
 									"ID", "Ism", "Familiya", "Reyting", "Kurs");
 
 							System.out.println("-------------------------------------------------------");
-
+							
+							Student[] allStudents = students.getAll();
+							
 							for (int i = 0; i < students.size(); i++) {
-								System.out.println(students.getAll()[i]);
+								System.out.println(allStudents[i]);
 							}
 						}
 					} catch (StudentNotFoundException e) {
@@ -248,7 +250,7 @@ public class Main {
 					
 				case 9:
 					
-					storage.loadFromFile();
+					students = storage.loadFromFile();
 					System.out.println("Ma'lumotlar fayldan yuklandi!");
 					break;
 					

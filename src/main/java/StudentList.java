@@ -18,7 +18,7 @@ public class StudentList {
 	
 	public void addStudent(Student student) {
 		
-		if (size() == CAPACITY) {
+		if (size() >= CAPACITY) {
 			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
 		}
 		
