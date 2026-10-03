@@ -18,6 +18,17 @@ public class StudentListTest {
 		
 		assertEquals(1, students.size());
 	}
+
+	@Test
+	void add() {
+
+		StudentList list = new StudentList();
+
+		NullPointerException e = assertThrows(NullPointerException.class, () ->
+				list.addStudent(null));
+
+		assertEquals("Student shouldn't be null!", e.getMessage());
+	}
 	
 	@Test
 	void testAddDuplicateStudent() {
