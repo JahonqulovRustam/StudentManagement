@@ -17,8 +17,10 @@ public class StudentList {
 	}
 	
 	public void addStudent(Student student) {
-		if (student == null) throw new NullPointerException("Student shouldn't be null!");
-
+		if (student == null) {
+			throw new IllegalArgumentException("Student null bo'lishi mumkin emas!");
+		}
+		
 		if (size() >= CAPACITY) {
 			throw new StudentListFullException("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!");
 		}
