@@ -1,4 +1,3 @@
-
 import java.util.*;
 import exceptions.*;
 
@@ -19,7 +18,6 @@ public class Main {
 			
 			switch (num) {
 				
-				
 				case 1:
 					
 					try {
@@ -35,99 +33,95 @@ public class Main {
 						System.out.print("Kursini kiriting: ");
 						int level = sc.nextInt();
 						
-						students.addStudent(name, surname, grade, level);
+						Student student = new Student(name, surname, grade, level);
+						
+						students.addStudent(student);
 						System.out.println("Student muvaffaqiyatli qo'shildi!");
-					} catch (DuplicateStudentException | StudentListFullException e) {
+					} catch (RuntimeException e) {
 						System.out.println(e.getMessage());
 					}
+					
 					break;
 				
 				
 				case 2:
-					
+
 					try {
 						if (students.size() != 0) {
-							
+
 							System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
 									"ID", "Ism", "Familiya", "Reyting", "Kurs");
-							
+
 							System.out.println("-------------------------------------------------------");
 							
+							Student[] allStudents = students.getAll();
+							
 							for (int i = 0; i < students.size(); i++) {
-								System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-										(int) students.getAll()[i][0],
-										students.getAll()[i][1],
-										students.getAll()[i][2],
-										(double) students.getAll()[i][3],
-										(int) students.getAll()[i][4]);
+								System.out.println(allStudents[i]);
 							}
 						}
 					} catch (StudentNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
-					
+
 					break;
-				
-				
+
+
 				case 3:
-					
+
 					try {
 						System.out.print("ID ni kiriting: ");
 						int id = sc.nextInt();
-						
-						
+
+
 						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
 								"ID", "Ism", "Familiya", "Reyting", "Kurs");
-						
+
 						System.out.println("-------------------------------------------------------");
-						
-						System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-								(int) students.getStudentById(id)[0],
-								students.getStudentById(id)[1],
-								students.getStudentById(id)[2],
-								(double) students.getStudentById(id)[3],
-								(int) students.getStudentById(id)[4]);
+
+						System.out.println(students.getStudentById(id));
 					} catch (StudentNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
-					
+
 					break;
-				
-				
+
+
 				case 4:
-					
+
 					try {
 						System.out.print("ID ni kiriting: ");
 						int id = sc.nextInt();
 						sc.nextLine();
-						
-						System.out.println("Ismi: " + students.getNameById(id));
+						Student previousSt = students.getStudentById(id);
+
+						System.out.println("Ismi: " + previousSt.getName());
 						System.out.print("Yangi ismi: ");
 						String newName = sc.nextLine();
-						
-						System.out.println("Familiyasi: " + students.getSurnameById(id));
+
+						System.out.println("Familiyasi: " + previousSt.getSurname());
 						System.out.print("Yangi familiyasi: ");
 						String newSurname = sc.nextLine();
-						
-						System.out.println("Reytingi: " + students.getGradeById(id));
+
+						System.out.println("Reytingi: " + previousSt.getGrade());
 						System.out.print("Yangi bahosi: ");
 						String newGrade = sc.nextLine();
-						
-						System.out.println("Kursi: " + students.getLevelById(id));
+
+						System.out.println("Kursi: " + previousSt.getLevel());
 						System.out.print("Yangi kursi: ");
 						String newLevel = sc.nextLine();
-						
-						students.updateStudentById(
-								id,
-								newName.isEmpty() ? students.getNameById(id) : newName,
-								newSurname.isEmpty() ? students.getSurnameById(id) : newSurname,
-								newGrade.isEmpty() ? students.getGradeById(id) : Double.parseDouble(newGrade),
-								newLevel.isEmpty() ? students.getLevelById(id) : Integer.parseInt(newLevel)
+
+						Student newStudent = new Student(
+								newName.isEmpty() ? previousSt.getName() : newName,
+								newSurname.isEmpty() ? previousSt.getSurname() : newSurname,
+								newGrade.isEmpty() ? previousSt.getGrade() : Double.parseDouble(newGrade),
+								newLevel.isEmpty() ? previousSt.getLevel() : Integer.parseInt(newLevel)
 						);
 						
+						students.updateStudentById(id, newStudent);
 						System.out.println("Student muvaffaqiyatli yangilandi.");
-						
-					} catch (StudentNotFoundException e) {
+
+					} catch (StudentNotFoundException | DuplicateStudentException e) {
 						System.out.println(e.getMessage());
 					} catch (NumberFormatException e) {
 						System.out.println("Son noto'g'ri formatda kiritildi");
@@ -136,17 +130,16 @@ public class Main {
 					}
 					
 					break;
-				
-				
-				case 5:
 					
+				case 5:
+
 					try {
 						System.out.print("ID ni kiriting: ");
-						int ayd = sc.nextInt();
-						
-						boolean result = students.deleteStudentById(ayd);
-						
-						if (result) {
+						int id = sc.nextInt();
+
+						boolean removed = students.deleteStudentById(id);
+
+						if (removed) {
 							System.out.println("Ushbu ID elementi muvaffaiyatli o'chirildi!");
 						}
 					} catch (StudentNotFoundException e) {
@@ -154,10 +147,10 @@ public class Main {
 					}
 					
 					break;
-				
-				
+
+
 				case 6:
-					
+
 					System.out.println("""
 								ID bo'yicha sortlash(1)
 								Ism bo'yicha sortlash(2)
@@ -166,12 +159,12 @@ public class Main {
 								Kursi bo'yicha sortlash(5)
 								Tugatish(6)
 								""");
-					
+
 					System.out.print("Birortasini tanlang: ");
 					int a = sc.nextInt();
-					
-					Object[][] sorted = null;
-					
+
+					Student[] sorted = null;
+
 					switch (a) {
 						case 1:
 							sorted = students.sort(Columns.ID);
@@ -194,96 +187,80 @@ public class Main {
 							System.out.println("Noto'g'ri tanlov!");
 							break;
 					}
-					
+
 					if (sorted != null) {
 						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
 								"ID", "Ism", "Familiya", "Reyting", "Kurs");
-						
+
 						System.out.println("-------------------------------------------------------");
-						
-						for (Object[] student : sorted) {
-							System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-									(int) student[0],
-									student[1],
-									student[2],
-									(double) student[3],
-									(int) student[4]);
+
+						for (Student student : sorted) {
+							System.out.println(student);
 						}
 					}
-					
+
 					break;
-				
+
 				case 7:
-					
+
 					sc.nextLine();
-					
-					List<Integer> foundStudentIds = null;
-					
+
+					List<Student> foundStudents;
+
 					System.out.print("Ism bo'yicha qidirish uchun ismni kiriting: ");
 					String name = sc.nextLine();
-					
+
 					System.out.print("Familiya bo'yicha qidirish uchun familiyani kiriting: ");
 					String surname = sc.nextLine();
-					
+
 					System.out.print("Reytingi bo'yicha qidirish uchun reytingni kiriting: ");
 					String grade = sc.nextLine();
-					
-					
+
+
 					System.out.print("Darajasi bo'yicha qidirish uchun darajani kiriting: ");
 					String level = sc.nextLine();
-					
+
 					if (!name.isEmpty()) {
-						foundStudentIds = students.search(name, null, null, null);
+						foundStudents = students.search(name, null, null, null);
 					} else if (!surname.isEmpty()) {
-						foundStudentIds = students.search(null, surname, null, null);
+						foundStudents = students.search(null, surname, null, null);
 					} else if (!grade.isEmpty()) {
-						foundStudentIds = students.search(null, null, Double.parseDouble(grade), null);
+						foundStudents = students.search(null, null, Double.parseDouble(grade), null);
 					} else {
-						foundStudentIds = students.search(null, null, null, Integer.parseInt(level));
+						foundStudents = students.search(null, null, null, Integer.parseInt(level));
 					}
-					
+
 					System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
 							"ID", "Ism", "Familiya", "Reyting", "Kurs");
-					
+
 					System.out.println("-------------------------------------------------------");
-					
-					for (int i = 0; i < foundStudentIds.size(); i++) {
-						int ids = foundStudentIds.get(i);
+
+					for (int i = 0; i < foundStudents.size(); i++) {
 						
-						Object[] student = students.getStudentById(ids);
-						System.out.printf("%-5d %-15s %-15s %-8.2f %-5d%n",
-								(Integer) student[0],
-								student[1],
-								student[2],
-								(Double) student[3],
-								(Integer) student[4]);
+						System.out.println(foundStudents.get(i));
 					}
-					
+
 					break;
-				
-				
+					
 				case 8:
 					
-					storage.saveToFile(students);
+					storage.saveToFile(students.getAll());
 					System.out.println("Ma'lumotlar faylga saqlandi!");
 					break;
-				
-				
+					
 				case 9:
 					
-					storage.loadFromFile();
+					students = storage.loadFromFile();
 					System.out.println("Ma'lumotlar fayldan yuklandi!");
 					break;
-				
-				
-				case 10:
 					
+				case 10:
+
 					System.out.println("Dasturdan chiqildi.");
 					sc.close();
 					return;
 			}
 		}
-		
 	}
 	
 	public static void menu() {
@@ -294,8 +271,8 @@ public class Main {
 		System.out.println("5. O'chirish");
 		System.out.println("6. Sortlash");
 		System.out.println("7. Qidirish");
-		System.out.println("8. Faylga yozish");
-		System.out.println("9. Fayldan o'qish");
+		System.out.println("8. Faylga saqlash");
+		System.out.println("9. Fayldan yuklash");
 		System.out.println("10. Chiqish");
 	}
 }

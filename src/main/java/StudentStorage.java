@@ -1,26 +1,29 @@
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class StudentStorage {
 	
-	private static final String FILENAME = "C:\\Users\\user\\OneDrive\\Desktop\\StudentList.txt";
+	private static final Path FILENAME = Paths.get("StudentList.txt");
 	private static final String DELIMITER = ",";
 	
-	public void saveToFile(StudentList list) {
+	public void saveToFile(Student[] students) {
 		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME))) {
+		try (BufferedWriter writer = Files.newBufferedWriter(FILENAME)) {
 			
-			Object[][] students = list.getAll();
-			
-			for (Object[] student : students) {
+			for (Student student : students) {
+				if (student == null) continue;
 				
-				String[] values = new String[student.length];
-				for (int i = 0; i < student.length; i++) {
-					values[i] = String.valueOf(student[i]);
-				}
+				writer.write(String.join(DELIMITER,
+						student.getId().toString(),
+						student.getName(),
+						student.getSurname(),
+						student.getGrade().toString(),
+						student.getLevel().toString()));
 				
-				String line = String.join(DELIMITER, values);
-				writer.write(line);
 				writer.newLine();
 			}
 			
@@ -33,12 +36,30 @@ public class StudentStorage {
 		
 		StudentList students = new StudentList();
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
+		if (!Files.exists(FILENAME)) {
+			return students;
+		}
+		
+		try (BufferedReader reader = Files.newBufferedReader(FILENAME)) {
 			
 			String line;
+			
 			while ((line = reader.readLine()) != null) {
+				
+				if (line.isBlank()) {
+					continue;
+				}
+				
 				String[] student = line.split(DELIMITER);
-				students.addStudent(student[1], student[2], Double.parseDouble(student[3]), Integer.parseInt(student[4]));
+				
+				Student s = new Student(
+						student[1],
+						student[2],
+						Double.parseDouble(student[3]),
+						Integer.parseInt(student[4])
+				);
+				
+				students.addStudent(s);
 			}
 			
 		} catch (IOException e) {
