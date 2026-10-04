@@ -47,18 +47,14 @@ public class Main {
 				case 2:
 
 					try {
-						if (students.size() != 0) {
+						System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
+								"ID", "Ism", "Familiya", "Reyting", "Kurs");
 
-							System.out.printf("%-5s %-15s %-15s %-8s %-5s%n",
-									"ID", "Ism", "Familiya", "Reyting", "Kurs");
-
-							System.out.println("-------------------------------------------------------");
+						System.out.println("-------------------------------------------------------");
 							
-							Student[] allStudents = students.getAll();
-							
-							for (int i = 0; i < students.size(); i++) {
-								System.out.println(allStudents[i]);
-							}
+						List<Student> allStudents = students.getAll();
+						for (Student student : allStudents) {
+							System.out.println(student);
 						}
 					} catch (StudentNotFoundException e) {
 						System.out.println(e.getMessage());
@@ -110,17 +106,21 @@ public class Main {
 						System.out.println("Kursi: " + previousSt.getLevel());
 						System.out.print("Yangi kursi: ");
 						String newLevel = sc.nextLine();
-
-						Student newStudent = new Student(
-								newName.isEmpty() ? previousSt.getName() : newName,
-								newSurname.isEmpty() ? previousSt.getSurname() : newSurname,
-								newGrade.isEmpty() ? previousSt.getGrade() : Double.parseDouble(newGrade),
-								newLevel.isEmpty() ? previousSt.getLevel() : Integer.parseInt(newLevel)
-						);
 						
-						students.updateStudentById(id, newStudent);
-						System.out.println("Student muvaffaqiyatli yangilandi.");
-
+						if (newName.isEmpty() && newSurname.isEmpty() && newGrade.isEmpty() && newLevel.isEmpty()) {
+							System.out.println("Student yangilanmadi!");
+						} else {
+							Student newStudent = new Student(
+									newName.isEmpty() ? previousSt.getName() : newName,
+									newSurname.isEmpty() ? previousSt.getSurname() : newSurname,
+									newGrade.isEmpty() ? previousSt.getGrade() : Double.parseDouble(newGrade),
+									newLevel.isEmpty() ? previousSt.getLevel() : Integer.parseInt(newLevel)
+							);
+							
+							students.updateStudentById(id, newStudent);
+							System.out.println("Student muvaffaqiyatli yangilandi.");
+						}
+						
 					} catch (StudentNotFoundException | DuplicateStudentException e) {
 						System.out.println(e.getMessage());
 					} catch (NumberFormatException e) {
@@ -163,7 +163,7 @@ public class Main {
 					System.out.print("Birortasini tanlang: ");
 					int a = sc.nextInt();
 
-					Student[] sorted = null;
+					List<Student> sorted = null;
 
 					switch (a) {
 						case 1:

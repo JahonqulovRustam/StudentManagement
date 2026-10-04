@@ -24,10 +24,10 @@ public class StudentListTest {
 
 		StudentList list = new StudentList();
 
-		NullPointerException e = assertThrows(NullPointerException.class, () ->
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
 				list.addStudent(null));
 
-		assertEquals("Student shouldn't be null!", e.getMessage());
+		assertEquals("Student null bo'lishi mumkin emas!", e.getMessage());
 	}
 	
 	@Test
@@ -46,28 +46,6 @@ public class StudentListTest {
 		
 		assertEquals("Ushbu student allaqachon mavjud!", exception.getMessage());
 	}
-	
-	@Test
-	void testAddMoreThanTenStudents() {
-		
-		StudentList students = new StudentList();
-		students.addStudent(new Student("Sirojjon", "Toshmurodov", 3.9, 4));
-		students.addStudent(new Student("Abror", "Boltayev", 4.5, 5));
-		students.addStudent(new Student("Abdulaziz", "Botirov", 2.0, 4));
-		students.addStudent(new Student("Jamshid", "Temirov", 3.0, 6));
-		students.addStudent(new Student("Abror", "Hamidov", 9.45, 3));
-		students.addStudent(new Student("Said", "Xolmurodov", 4.5, 8));
-		students.addStudent(new Student("Bahrom", "Murodov", 5.0, 4));
-		students.addStudent(new Student("Bahrom", "Temirov", 4.34, 5));
-		students.addStudent(new Student("Said", "Amonov", 4.567, 5));
-		students.addStudent(new Student("Saidabbos", "Alisherov", 0.0, 4));
-		
-		StudentListFullException exception = assertThrows(StudentListFullException.class, () ->
-				students.addStudent(new Student("Nozanin", "Malikova", 4.32, 3))
-		);
-		
-		assertEquals("Ro'yxat to'lgan. Boshqa student qo'shib bo'lmaydi!", exception.getMessage());
-	}
 
 	@Test
 	void testGetAllVulnerability() {
@@ -76,8 +54,8 @@ public class StudentListTest {
 		students.addStudent(new Student("Rustam", "Jahonqulov", 6.4, 7));
 		students.addStudent(new Student("Ruslan", "Sharipov", 6.0, 9));
 
-		var student = students.getAll();
-		student[0] = null;
+		List<Student> student = students.getAll();
+		student.set(0, null);
 		assertNotNull(students.getStudentById(1));
 	}
 
@@ -90,13 +68,13 @@ public class StudentListTest {
 		students.addStudent(new Student("Abdulaziz", "Botirov", 2.0, 4));
 		students.addStudent(new Student("Jamshid", "Aliqulov", 3.0, 6));
 
-		Student[] actual = students.getAll();
+		List<Student> actual = students.getAll();
 
 		assertAll(
-				() -> assertEquals(new Student( "Sirojjon", "Toshmurodov", 3.9, 4), actual[0]),
-				() -> assertEquals(new Student( "Abror", "Boltayev", 4.5, 5), actual[1]),
-				() -> assertEquals(new Student( "Abdulaziz", "Botirov", 2.0, 4), actual[2]),
-				() -> assertEquals(new Student( "Jamshid", "Aliqulov", 3.0, 6), actual[3])
+				() -> assertEquals(new Student( "Sirojjon", "Toshmurodov", 3.9, 4), actual.getFirst()),
+				() -> assertEquals(new Student( "Abror", "Boltayev", 4.5, 5), actual.get(1)),
+				() -> assertEquals(new Student( "Abdulaziz", "Botirov", 2.0, 4), actual.get(2)),
+				() -> assertEquals(new Student( "Jamshid", "Aliqulov", 3.0, 6), actual.getLast())
 		);
 	}
 
@@ -145,18 +123,18 @@ public class StudentListTest {
 	@DisplayName("Update throws when the new data duplicates another student")
 	void testUpdateStudent_throwsOnDuplicate() {
 		StudentList students = new StudentList();
-		
+
 		students.addStudent(new Student("Sirojjon", "Toshmurodov", 3.9, 4));
 		students.addStudent(new Student("Abror", "Boltayev", 4.5, 5));
 		Student student = new Student("Sirojjon", "Toshmurodov", 3.9, 4);
-		
+
 		DuplicateStudentException exception = assertThrows(DuplicateStudentException.class, () ->
 				students.updateStudentById(2, student)
 		);
-		
+
 		assertEquals("Ushbu student allaqachon mavjud!", exception.getMessage());
 	}
-	
+
 	@Test
 	void testDeleteStudent() {
 		StudentList students = new StudentList();
@@ -168,14 +146,14 @@ public class StudentListTest {
 		assertTrue(students.deleteStudentById(2));
 		assertEquals(2, students.size());
 	}
-	
+
 	@Test
 	void deleteNotFoundStudent() {
 		StudentList students = new StudentList();
-		
+
 		assertFalse(students.deleteStudentById(1));
 	}
-	
+
 	@Test
 	void testSize() {
 		StudentList students = new StudentList();
@@ -208,7 +186,7 @@ public class StudentListTest {
 
 	@Test
 	void testSearch() {
-		
+
 		assertAll(
 				() -> assertEquals(students.search("Sirojjon", null, null, null),
 						List.of(new Student("Sirojjon", "Toshmurodov", 3.9, 4))),
@@ -228,9 +206,9 @@ public class StudentListTest {
 	@Test
 	void testSortById() {
 
-		Student[] sorted = students.sort(Columns.ID);
+		List<Student> sorted = students.sort(Columns.ID);
 
-		Student[] expected = {
+		List<Student> expected = List.of(
 				new Student("Sirojjon",  "Toshmurodov", 3.9,   4),
 				new Student("Abror",     "Boltayev",     4.5,   5),
 				new Student("Abdulaziz", "Botirov",      2.0,   4),
@@ -241,17 +219,17 @@ public class StudentListTest {
 				new Student("Bahrom",    "Temirov",      4.34,  5),
 				new Student("Said",      "Amonov",       4.567, 5),
 				new Student("Saidabbos", "Alisherov",    0.0,   4)
-		};
+		);
 
-		assertArrayEquals(expected, sorted);
+		assertEquals(expected, sorted);
 	}
-	
+
 	@Test
 	void testSortByName() {
 
-		Student[] sorted = students.sort(Columns.NAME);
+		List<Student> sorted = students.sort(Columns.NAME);
 
-		Student[] expected = {
+		List<Student> expected = List.of(
 				new Student("Abdulaziz", "Botirov",      2.0,   4),
 				new Student("Abror",     "Boltayev",     4.5,   5),
 				new Student("Abror",     "Hamidov",      9.45,   3),
@@ -262,17 +240,17 @@ public class StudentListTest {
 				new Student("Said",      "Amonov",       4.567, 5),
 				new Student("Saidabbos", "Alisherov",    0.0,   4),
 				new Student("Sirojjon",  "Toshmurodov", 3.9,   4)
-		};
+		);
 
-		assertArrayEquals(expected, sorted);
+		assertEquals(expected, sorted);
 	}
-	
+
 	@Test
 	void testSortBySurname() {
 
-		Student[] sorted = students.sort(Columns.SURNAME);
+		List<Student> sorted = students.sort(Columns.SURNAME);
 
-		Student[] expected = {
+		List<Student> expected = List.of(
 				new Student("Saidabbos", "Alisherov",    0.0,   4),
 				new Student("Said",      "Amonov",       4.567, 5),
 				new Student("Abror",     "Boltayev",     4.5,   5),
@@ -283,17 +261,17 @@ public class StudentListTest {
 				new Student("Bahrom",    "Temirov",      4.34,  5),
 				new Student("Sirojjon",  "Toshmurodov", 3.9,   4),
 				new Student("Said",      "Xolmurodov",   4.5,   8)
-		};
+		);
 
-		assertArrayEquals(expected, sorted);
+		assertEquals(expected, sorted);
 	}
-	
+
 	@Test
 	void testSortByGrade() {
 
-		Student[] sorted = students.sort(Columns.GRADE);
+		List<Student> sorted = students.sort(Columns.GRADE);
 
-		Student[] expected = {
+		List<Student> expected = List.of(
 				new Student("Saidabbos", "Alisherov",    0.0,   4),
 				new Student("Abdulaziz", "Botirov",      2.0,   4),
 				new Student("Jamshid",   "Temirov",      3.0,   6),
@@ -304,17 +282,17 @@ public class StudentListTest {
 				new Student("Said",      "Amonov",       4.567, 5),
 				new Student("Bahrom",    "Murodov",      5.0,   4),
 				new Student("Abror",     "Hamidov",      9.45,   3)
-		};
+		);
 
-		assertArrayEquals(expected, sorted);
+		assertEquals(expected, sorted);
 	}
-	
+
 	@Test
 	void testSortByLevel() {
 
-		Student[] sorted = students.sort(Columns.LEVEL);
+		List<Student> sorted = students.sort(Columns.LEVEL);
 
-		Student[] expected = {
+		List<Student> expected = List.of(
 				new Student("Abror",     "Hamidov",      9.45,   3),
 				new Student("Sirojjon",  "Toshmurodov", 3.9,   4),
 				new Student("Abdulaziz", "Botirov",      2.0,   4),
@@ -325,8 +303,8 @@ public class StudentListTest {
 				new Student("Said",      "Amonov",       4.567, 5),
 				new Student("Jamshid",   "Temirov",      3.0,   6),
 				new Student("Said",      "Xolmurodov",   4.5,   8)
-		};
+		);
 
-		assertArrayEquals(expected, sorted);
+		assertEquals(expected, sorted);
 	}
 }
