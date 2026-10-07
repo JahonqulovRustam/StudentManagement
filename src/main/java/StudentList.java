@@ -74,15 +74,15 @@ public class StudentList {
 		List<Student> sorted = new ArrayList<>(students);
 		
 		switch (column) {
-			case ID -> Collections.sort(sorted, new StudentIdComparator());
+			case ID -> Collections.sort(sorted, StudentComparators.BY_ID);
 			
-			case NAME -> Collections.sort(sorted, new StudentNameComparator());
+			case NAME -> Collections.sort(sorted, StudentComparators.BY_NAME);
 			
-			case SURNAME -> Collections.sort(sorted, new StudentSurnameComparator());
+			case SURNAME -> Collections.sort(sorted, StudentComparators.BY_SURNAME);
 			
-			case GRADE -> Collections.sort(sorted, new StudentGradeComparator());
+			case GRADE -> Collections.sort(sorted, StudentComparators.BY_GRADE);
 			
-			case LEVEL -> Collections.sort(sorted, new StudentLevelComparator());
+			case LEVEL -> Collections.sort(sorted, StudentComparators.BY_LEVEL);
 		}
 		
 		return sorted;

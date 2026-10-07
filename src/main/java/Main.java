@@ -93,31 +93,31 @@ public class Main {
 
 						System.out.println("Ismi: " + previousSt.getName());
 						System.out.print("Yangi ismi: ");
-						String newName = sc.nextLine();
+						String updatedName = sc.nextLine();
 
 						System.out.println("Familiyasi: " + previousSt.getSurname());
 						System.out.print("Yangi familiyasi: ");
-						String newSurname = sc.nextLine();
+						String updatedSurname = sc.nextLine();
 
 						System.out.println("Reytingi: " + previousSt.getGrade());
 						System.out.print("Yangi bahosi: ");
-						String newGrade = sc.nextLine();
+						String updatedGrade = sc.nextLine();
 
 						System.out.println("Kursi: " + previousSt.getLevel());
 						System.out.print("Yangi kursi: ");
-						String newLevel = sc.nextLine();
+						String updatedLevel = sc.nextLine();
 						
-						if (newName.isEmpty() && newSurname.isEmpty() && newGrade.isEmpty() && newLevel.isEmpty()) {
+						if (updatedName.isEmpty() && updatedSurname.isEmpty() && updatedGrade.isEmpty() && updatedLevel.isEmpty()) {
 							System.out.println("Student yangilanmadi!");
 						} else {
-							Student newStudent = new Student(
-									newName.isEmpty() ? previousSt.getName() : newName,
-									newSurname.isEmpty() ? previousSt.getSurname() : newSurname,
-									newGrade.isEmpty() ? previousSt.getGrade() : Double.parseDouble(newGrade),
-									newLevel.isEmpty() ? previousSt.getLevel() : Integer.parseInt(newLevel)
+							Student updatedStudentInfo = new Student(
+									updatedName.isEmpty() ? previousSt.getName() : updatedName,
+									updatedSurname.isEmpty() ? previousSt.getSurname() : updatedSurname,
+									updatedGrade.isEmpty() ? previousSt.getGrade() : Double.parseDouble(updatedGrade),
+									updatedLevel.isEmpty() ? previousSt.getLevel() : Integer.parseInt(updatedLevel)
 							);
 							
-							students.updateStudentById(id, newStudent);
+							students.updateStudentById(id, updatedStudentInfo);
 							System.out.println("Student muvaffaqiyatli yangilandi.");
 						}
 						

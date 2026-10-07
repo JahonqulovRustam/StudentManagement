@@ -54,8 +54,8 @@ public class StudentListTest {
 		students.addStudent(new Student("Rustam", "Jahonqulov", 6.4, 7));
 		students.addStudent(new Student("Ruslan", "Sharipov", 6.0, 9));
 
-		List<Student> student = students.getAll();
-		student.set(0, null);
+		List<Student> allStudents = students.getAll();
+		allStudents.set(0, null);
 		assertNotNull(students.getStudentById(1));
 	}
 
