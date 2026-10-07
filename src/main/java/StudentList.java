@@ -65,26 +65,24 @@ public class StudentList {
 	}
 	
 	public boolean deleteStudentById(int id) {
-		
-		return students.removeIf(student -> student.getId().equals(id));
+		return students.removeIf(
+				student -> student.getId().equals(id)
+		);
 	}
 	
-	
 	public List<Student> sort(Columns column) {
-		
-		List<Student> sorted = new ArrayList<>();
+		List<Student> sorted = new ArrayList<>(students);
 		
 		switch (column) {
+			case ID -> Collections.sort(sorted, new StudentIdComparator());
 			
-			case ID -> sorted = students.stream().sorted(Comparator.comparingInt(Student::getId)).toList();
+			case NAME -> Collections.sort(sorted, new StudentNameComparator());
 			
-			case NAME -> sorted = students.stream().sorted(Comparator.comparing(Student::getName)).toList();
+			case SURNAME -> Collections.sort(sorted, new StudentSurnameComparator());
 			
-			case SURNAME -> sorted = students.stream().sorted(Comparator.comparing(Student::getSurname)).toList();
+			case GRADE -> Collections.sort(sorted, new StudentGradeComparator());
 			
-			case GRADE -> sorted = students.stream().sorted(Comparator.comparingDouble(Student::getGrade)).toList();
-			
-			case LEVEL -> sorted = students.stream().sorted(Comparator.comparingInt(Student::getLevel)).toList();
+			case LEVEL -> Collections.sort(sorted, new StudentLevelComparator());
 		}
 		
 		return sorted;
@@ -104,11 +102,11 @@ public class StudentList {
 				
 				searchedStudents.add(student.clone());
 				
-			} else if (grade != null && student.getGrade().equals(grade)) {
+			} else if (student.getGrade().equals(grade)) {
 				
 				searchedStudents.add(student.clone());
 				
-			} else if (level != null && student.getLevel().equals(level)) {
+			} else if (student.getLevel().equals(level)) {
 				
 				searchedStudents.add(student.clone());
 			}
