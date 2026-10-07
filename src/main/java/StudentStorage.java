@@ -3,6 +3,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 
 public class StudentStorage {
@@ -10,7 +11,7 @@ public class StudentStorage {
 	private static final Path FILENAME = Paths.get("StudentList.txt");
 	private static final String DELIMITER = ",";
 	
-	public void saveToFile(Student[] students) {
+	public void saveToFile(List<Student> students) {
 		
 		try (BufferedWriter writer = Files.newBufferedWriter(FILENAME)) {
 			
