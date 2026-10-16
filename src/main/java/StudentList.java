@@ -74,9 +74,9 @@ public class StudentList {
     public List<Student> sort(Columns column, boolean desc) {
         List<Student> sorted = new ArrayList<>(students);
         if (desc) {
-            Collections.sort(sorted, column.reversed());
+            Collections.sort(sorted, column.getComparator().reversed());
         } else {
-            Collections.sort(sorted, column);
+            Collections.sort(sorted, column.getComparator());
         }
         return sorted;
     }
